@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="dark_dark">#191926</color>
+    <color name="light_light">#ECECEC</color>
+    <color name="label">#D8D8D8</color>
+    <color name="rasp">#FF3466</color>
+    <color name="reviews">#6D6D80</color>
+
 </resources>
