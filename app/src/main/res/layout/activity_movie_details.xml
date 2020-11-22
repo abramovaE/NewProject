@@ -91,7 +91,7 @@
             app:lineHeight="36dp" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/storyline"
             android:layout_width="0dp"
             android:layout_height="20dp"
             android:layout_marginStart="16dp"
@@ -115,13 +115,13 @@
             android:src="@drawable/star2"
             android:adjustViewBounds="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView1" />
+            app:layout_constraintTop_toBottomOf="@id/storyline" />
         <ImageView
             android:id="@+id/star1"
             android:layout_width="13.02dp"
             android:layout_height="12dp"
             app:layout_constraintStart_toStartOf="@id/star0"
-            app:layout_constraintTop_toBottomOf="@id/textView1"
+            app:layout_constraintTop_toBottomOf="@id/storyline"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
             android:src="@drawable/star2"
@@ -133,7 +133,7 @@
             android:layout_width="13.02dp"
             android:layout_height="12dp"
             app:layout_constraintStart_toStartOf="@id/star1"
-            app:layout_constraintTop_toBottomOf="@id/textView1"
+            app:layout_constraintTop_toBottomOf="@id/storyline"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
             android:src="@drawable/star2"
@@ -144,7 +144,7 @@
             android:layout_width="13.02dp"
             android:layout_height="12dp"
             app:layout_constraintStart_toStartOf="@id/star2"
-            app:layout_constraintTop_toBottomOf="@id/textView1"
+            app:layout_constraintTop_toBottomOf="@id/storyline"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
             android:src="@drawable/star2"
@@ -161,7 +161,7 @@
             android:src="@drawable/star"
             app:layout_constraintStart_toStartOf="@id/star3"
 
-            app:layout_constraintTop_toBottomOf="@id/textView1" />
+            app:layout_constraintTop_toBottomOf="@id/storyline" />
 
         <TextView
             android:id="@+id/textView2"
@@ -174,7 +174,7 @@
             android:textAllCaps="true"
             android:textColor="@color/reviews"
             app:layout_constraintStart_toEndOf="@id/star4"
-            app:layout_constraintTop_toBottomOf="@id/textView1" />
+            app:layout_constraintTop_toBottomOf="@id/storyline" />
 
         <TextView
             android:id="@+id/textView3"
@@ -214,7 +214,7 @@
 
         <TextView
             android:textSize="12sp"
-            android:id="@+id/textView5"
+            android:id="@+id/story"
             android:layout_width="0dp"
             android:lineHeight="24px"
             android:layout_height="wrap_content"
@@ -243,7 +243,7 @@
             app:layout_constraintEnd_toStartOf="@+id/imageView1"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView5"
+            app:layout_constraintTop_toBottomOf="@id/story"
             />
 
         <ImageView
@@ -259,7 +259,7 @@
             app:layout_constraintEnd_toStartOf="@+id/imageView2"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imageView0"
-            app:layout_constraintTop_toBottomOf="@id/textView5"
+            app:layout_constraintTop_toBottomOf="@id/story"
             />
 
         <ImageView
@@ -274,7 +274,7 @@
             app:layout_constraintEnd_toStartOf="@+id/imageView3"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imageView1"
-            app:layout_constraintTop_toBottomOf="@id/textView5"
+            app:layout_constraintTop_toBottomOf="@id/story"
             android:src="@drawable/movie2"
 
             />
@@ -295,7 +295,7 @@
             app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintDimensionRatio="1:1"
 
-            app:layout_constraintTop_toBottomOf="@id/textView5" />
+            app:layout_constraintTop_toBottomOf="@id/story" />
 
 
         <TextView
