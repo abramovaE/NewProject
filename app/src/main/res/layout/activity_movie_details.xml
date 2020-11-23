@@ -4,17 +4,11 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    android:background="@color/dark_dark">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/dark_dark"
-
-        >
-
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/imageView"
@@ -22,13 +16,31 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:cropToPadding="false"
-            android:foreground="@drawable/gradient"
-            android:scaleType="centerCrop"
             android:src="@drawable/orig"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/img_view"/>
+
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="false"
+            android:src="@drawable/gradient"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@id/imageView"
+            app:layout_constraintEnd_toEndOf="@id/imageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/imageView"
+            app:layout_constraintTop_toTopOf="@id/imageView"
+            android:contentDescription="@string/background_img"/>
+
+
 
         <ImageView
             android:id="@+id/chevron"
@@ -40,20 +52,20 @@
             android:background="@color/dark_dark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/chevron"
 
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginStart="8dp"
             android:text="@string/back"
             android:textColor="@color/light_light"
             android:alpha="0.2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintStart_toEndOf="@id/chevron"
+            app:layout_constraintTop_toTopOf="@id/chevron"
+            app:layout_constraintBottom_toBottomOf="@id/chevron"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,7 +76,6 @@
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/textView0"
-
             app:layout_constraintStart_toStartOf="parent" />
 
 
@@ -76,16 +87,13 @@
             android:layout_marginTop="254dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="sans-serif-medium"
-            android:lineHeight="40dp"
             android:lines="2"
             android:text="Avengers: \nEnd Game"
             android:textAlignment="viewStart"
             android:textColor="@color/light_light"
-            android:textFontWeight="900"
+            android:textStyle="bold"
             android:textSize="40sp"
             app:layout_constraintEnd_toEndOf="parent"
-
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:lineHeight="36dp" />
@@ -106,6 +114,8 @@
             app:layout_constraintTop_toBottomOf="@id/textView0" />
 
         <ImageView
+            android:contentDescription="@string/star0"
+
             android:id="@+id/star0"
             android:layout_width="13.02dp"
             android:layout_height="12dp"
@@ -117,6 +127,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/storyline" />
         <ImageView
+            android:contentDescription="@string/star1"
+
             android:id="@+id/star1"
             android:layout_width="13.02dp"
             android:layout_height="12dp"
@@ -129,6 +141,8 @@
 
             />
         <ImageView
+            android:contentDescription="@string/star2"
+
             android:id="@+id/star2"
             android:layout_width="13.02dp"
             android:layout_height="12dp"
@@ -140,6 +154,8 @@
 
             />
         <ImageView
+            android:contentDescription="@string/star3"
+
             android:id="@+id/star3"
             android:layout_width="13.02dp"
             android:layout_height="12dp"
@@ -152,6 +168,7 @@
             />
 
         <ImageView
+            android:contentDescription="@string/star4"
             android:id="@+id/star4"
             android:layout_width="13.02dp"
             android:layout_height="12dp"
@@ -186,8 +203,8 @@
             android:fontFamily="sans-serif-medium"
             android:text="@string/storyline"
             android:textColor="@color/white"
-            android:textFontWeight="900"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView2" />
@@ -195,7 +212,7 @@
         <TextView
             android:id="@+id/textView4"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
 
@@ -205,7 +222,9 @@
             android:fontFamily="sans-serif-thin"
             android:text="@string/storyline_text"
             android:textColor="@color/white"
-            android:textFontWeight="300"
+
+            android:gravity="center_vertical"
+
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -216,7 +235,7 @@
             android:textSize="12sp"
             android:id="@+id/story"
             android:layout_width="0dp"
-            android:lineHeight="24px"
+
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
@@ -230,6 +249,8 @@
 
 
         <ImageView
+            android:contentDescription="@string/img0"
+
             android:id="@+id/imageView0"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -237,7 +258,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="7dp"
             android:src="@drawable/movie0"
-
             android:adjustViewBounds="true"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/imageView1"
@@ -255,6 +275,8 @@
             android:layout_marginTop="7dp"
             android:src="@drawable/movie1"
             app:layout_constraintDimensionRatio="1:1"
+
+            android:contentDescription="@string/img1"
 
             app:layout_constraintEnd_toStartOf="@+id/imageView2"
             app:layout_constraintHorizontal_bias="0.5"
@@ -276,9 +298,10 @@
             app:layout_constraintStart_toEndOf="@+id/imageView1"
             app:layout_constraintTop_toBottomOf="@id/story"
             android:src="@drawable/movie2"
+            android:contentDescription="@string/img2"
 
             />
-        />
+
 
         <ImageView
             android:id="@+id/imageView3"
@@ -294,6 +317,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintDimensionRatio="1:1"
+            android:contentDescription="@string/img3"
 
             app:layout_constraintTop_toBottomOf="@id/story" />
 
@@ -307,7 +331,7 @@
             android:text="@string/robert_downey_jr"
 
             android:textColor="@color/label"
-            android:textFontWeight="900"
+            android:textStyle="bold"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@id/imageView0"
 
@@ -323,7 +347,7 @@
             android:fontFamily="sans-serif-medium"
             android:text="@string/chris_evans"
             android:textColor="@color/label"
-            android:textFontWeight="900"
+            android:textStyle="bold"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@id/imageView1"
 
@@ -338,7 +362,7 @@
             android:fontFamily="sans-serif-medium"
             android:text="@string/mark_ruffalo"
             android:textColor="@color/label"
-            android:textFontWeight="900"
+            android:textStyle="bold"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@id/imageView2"
 
@@ -353,7 +377,7 @@
             android:fontFamily="sans-serif-medium"
             android:text="@string/chris_hemsworth"
             android:textColor="@color/label"
-            android:textFontWeight="900"
+            android:textStyle="bold"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@id/imageView3"
             app:layout_constraintStart_toStartOf="@id/imageView3"
