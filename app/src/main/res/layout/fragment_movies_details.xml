@@ -36,7 +36,9 @@
             app:layout_constraintEnd_toEndOf="@id/imageView"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/imageView"
-            app:layout_constraintTop_toTopOf="@id/imageView"/>
+            app:layout_constraintTop_toTopOf="@id/imageView"
+
+            />
 
 
 
@@ -53,6 +55,7 @@
             />
 
         <TextView
+            android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -61,7 +64,12 @@
             android:alpha="0.2"
             app:layout_constraintStart_toEndOf="@id/chevron"
             app:layout_constraintTop_toTopOf="@id/chevron"
-            app:layout_constraintBottom_toBottomOf="@id/chevron"/>
+            app:layout_constraintBottom_toBottomOf="@id/chevron"
+            android:clickable="true"
+            android:onClick="backClick"
+            />
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
