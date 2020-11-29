@@ -4,8 +4,7 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import androidx.fragment.app.Fragment
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,7 +32,6 @@ class MainActivity : AppCompatActivity() {
             fragmentMoviesList?.apply {
                 supportFragmentManager.beginTransaction()
                     .add(R.id.frame, this, FRAGMENT_MOVIES_LIST_TAG)
-                    .addToBackStack(FRAGMENT_MOVIES_LIST_TAG)
                     .commit()
             }
         }
@@ -52,9 +50,15 @@ class MainActivity : AppCompatActivity() {
 
     public fun backClick(v: View){
         supportFragmentManager.beginTransaction()
-                .remove(fragmentMovieDetails as Fragment)
+                .replace(R.id.frame, fragmentMoviesList!!)
                 .commit()
 
+    }
+
+    public fun movieDetailsClick(v: View){
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.frame, fragmentMovieDetails!!)
+                .commit()
     }
 
 }
