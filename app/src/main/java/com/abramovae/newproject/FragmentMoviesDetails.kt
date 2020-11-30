@@ -15,8 +15,4 @@ class FragmentMoviesDetails: Fragment(){
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_movies_details, container, false)
-
-
-
-
 }

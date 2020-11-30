@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.view.View
 
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity(){
 
     val FRAGMENT_MOVIE_DETAILS_TAG = "FRAGMENT_MOVIE_DETAILS"
     val FRAGMENT_MOVIES_LIST_TAG = "FRAGMENT_MOVIES_LIST"
@@ -20,14 +19,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            fragmentMovieDetails = FragmentMoviesDetails()
-            fragmentMovieDetails?.apply {
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.frame, this, FRAGMENT_MOVIE_DETAILS_TAG)
-                    .addToBackStack(FRAGMENT_MOVIE_DETAILS_TAG)
-                    .commit()
-            }
-
             fragmentMoviesList = FragmentMoviesList()
             fragmentMoviesList?.apply {
                 supportFragmentManager.beginTransaction()
@@ -43,22 +34,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
     }
 
-    public fun backClick(v: View){
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.frame, fragmentMoviesList!!)
-                .commit()
 
+
+    public fun backClick(v: View){
+        supportFragmentManager.popBackStack()
     }
 
     public fun movieDetailsClick(v: View){
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.frame, fragmentMovieDetails!!)
-                .commit()
+        fragmentMovieDetails = FragmentMoviesDetails()
+        fragmentMovieDetails?.apply {
+            supportFragmentManager.beginTransaction()
+                    .add(R.id.frame, this, FRAGMENT_MOVIE_DETAILS_TAG)
+                    .addToBackStack(FRAGMENT_MOVIE_DETAILS_TAG)
+                    .commit()
+        }
     }
+
 
 }
