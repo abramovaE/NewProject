@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:background="@color/dark_dark"
+    xmlns:tools="http://schemas.android.com/tools"
+
+
+    >
+
+
+    <ImageView
+        android:id="@+id/imgActor"
+
+        tools:src="@tools:sample/avatars"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/movie0"
+        android:adjustViewBounds="true"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+
+
+    <TextView
+        android:id="@+id/nameActor"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/robert_downey_jr"
+
+        android:textColor="@color/label"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/imgActor"
+
+        app:layout_constraintStart_toStartOf="@id/imgActor"
+
+        app:layout_constraintTop_toBottomOf="@id/imgActor" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
