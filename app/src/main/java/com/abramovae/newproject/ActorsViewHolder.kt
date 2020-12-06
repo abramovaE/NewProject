@@ -14,7 +14,7 @@ class ActorsViewHolder(view: View): RecyclerView.ViewHolder(view) {
     fun bind(actor: Actor){
         name.setText(actor.name)
         img.setImageResource(actor.imgId)
-        img.width = DisplayMetrics().widthPixels/4
+
 
     }
 }
