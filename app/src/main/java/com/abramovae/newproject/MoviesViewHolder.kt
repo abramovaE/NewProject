@@ -37,9 +37,5 @@ class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view) {
         }
 
     }
-
-
-
-
 }
 

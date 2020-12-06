@@ -1,14 +1,10 @@
 package com.abramovae.newproject
 
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class ActorsAdapter(var actors: List<Actor>): RecyclerView.Adapter<ActorsViewHolder>() {
-
-
-
 
     override fun getItemCount(): Int {
         return actors.size
@@ -22,7 +18,6 @@ class ActorsAdapter(var actors: List<Actor>): RecyclerView.Adapter<ActorsViewHol
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorsViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.view_holder_actor, parent, false)
-
         view.getLayoutParams().width = parent.width/4;
         return ActorsViewHolder(view)
     }
