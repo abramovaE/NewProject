@@ -9,10 +9,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.listOf as listOf1
 
 class FragmentMovieDetails: Fragment(){
+
 
     companion object {
         fun newInstance(movie: Movie): FragmentMovieDetails {
@@ -35,17 +37,17 @@ class FragmentMovieDetails: Fragment(){
         val movie: Movie = arg?.get("movie") as Movie
         var view = inflater.inflate(R.layout.fragment_movies_details, container, false)
 
-        val backGround = view?.findViewById<ImageView>(R.id.imageView)
-        val movieName = view?.findViewById<TextView>(R.id.movieName)
+        val backGround = view.findViewById<ImageView>(R.id.imageView)
+        val movieName = view.findViewById<TextView>(R.id.movieName)
         val age:TextView = view.findViewById(R.id.age)
         val genre:TextView = view.findViewById(R.id.movieGenre)
         val reviews: TextView = view.findViewById(R.id.movieReviews)
 
-        backGround?.setImageResource(movie.imgId);
-        movieName?.text = movie.title
-        age?.text = "" + movie.age + "+"
-        genre?.text = movie.genre
-        reviews?.text = "" + movie.reviews + " reviews"
+        backGround.setImageResource(movie.imgId);
+        movieName.text = movie.title
+        age.text = "" + movie.age + "+"
+        genre.text = movie.genre
+        reviews.text = "" + movie.reviews + " reviews"
 
         val star0: ImageView = view.findViewById(R.id.star0)
         val star1: ImageView = view.findViewById(R.id.star1)
@@ -71,8 +73,8 @@ class FragmentMovieDetails: Fragment(){
 
         var actors = listOf1(a1, a2, a3, a4, a5)
 
-        var l = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
-        list.layoutManager = l
+//        var l = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
+        list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         list.adapter = ActorsAdapter(actors)
         return view
     }

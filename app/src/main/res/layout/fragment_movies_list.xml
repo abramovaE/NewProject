@@ -1,101 +1,37 @@
-<ScrollView xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/dark_dark">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+ <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/dark_dark"
         >
 
 
-        <View
-            android:id="@+id/top_menu_1"
-            android:layout_width="375dp"
-            android:layout_height="40dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="44dp"
-            />
+         <View
+             android:id="@+id/top_menu_1"
+             android:layout_width="0dp"
+             android:layout_height="40dp"
+             android:layout_marginTop="44dp"
+
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent" />
 
 
         <View
             android:id="@+id/path"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             app:layout_constraintTop_toTopOf="@id/top_menu_1"
             app:layout_constraintStart_toStartOf="@id/top_menu_1"
             app:layout_constraintEnd_toStartOf="@id/movList"
             app:layout_constraintBottom_toBottomOf="@id/top_menu_1"
-            android:layout_marginTop="17.78dp"
-            android:layout_marginBottom="17.78dp"
-            android:layout_marginStart="21.83dp"
-            android:layout_marginEnd="13.67dp"
-            android:background="@drawable/circle"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/combined_shape"
             />
-
-
-        <View
-            android:id="@+id/path2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@id/top_menu_1"
-            app:layout_constraintStart_toStartOf="@id/top_menu_1"
-            app:layout_constraintEnd_toStartOf="@id/movList"
-            app:layout_constraintBottom_toBottomOf="@id/top_menu_1"
-            android:layout_marginTop="14.22dp"
-            android:layout_marginBottom="14.22dp"
-            android:layout_marginStart="18.23dp"
-            android:layout_marginEnd="10.07dp"
-
-            android:background="@drawable/circle"
-            />
-
-
-        <View
-            android:id="@+id/line_1"
-            android:layout_width="3dp"
-            android:layout_height="1dp"
-            app:layout_constraintStart_toEndOf="@id/path2"
-            app:layout_constraintTop_toTopOf="@id/path2"
-            app:layout_constraintBottom_toBottomOf="@id/path2"
-            android:background="@drawable/line"
-            tools:ignore="MissingConstraints" />
-
-        <View
-            android:id="@+id/line_2"
-            android:layout_width="3dp"
-            android:layout_height="1dp"
-            app:layout_constraintEnd_toStartOf="@id/path2"
-            app:layout_constraintTop_toTopOf="@id/path2"
-            app:layout_constraintBottom_toBottomOf="@id/path2"
-            android:background="@drawable/line"
-            tools:ignore="MissingConstraints" />
-
-        <View
-            android:id="@+id/line_3"
-            android:layout_width="1dp"
-            android:layout_height="3dp"
-            app:layout_constraintStart_toStartOf="@id/path2"
-            app:layout_constraintEnd_toEndOf="@id/path2"
-            app:layout_constraintTop_toBottomOf="@id/path2"
-            android:background="@drawable/line"
-            tools:ignore="MissingConstraints" />
-
-        <View
-            android:id="@+id/line_4"
-            android:layout_width="1dp"
-            android:layout_height="3dp"
-            app:layout_constraintStart_toStartOf="@id/path2"
-            app:layout_constraintEnd_toEndOf="@id/path2"
-            app:layout_constraintBottom_toTopOf="@id/path2"
-            android:background="@drawable/line"
-            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/movList"
@@ -150,4 +86,3 @@
 <!--            />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>

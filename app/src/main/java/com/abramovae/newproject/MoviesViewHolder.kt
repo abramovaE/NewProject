@@ -1,11 +1,13 @@
 package com.abramovae.newproject
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view) {
+class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view){
+    val FRAGMENT_MOVIE_DETAILS_TAG = "FRAGMENT_MOVIE_DETAILS"
 
     private val title: TextView = itemView.findViewById(R.id.name)
     private val picture: ImageView = itemView.findViewById(R.id.bgg)
@@ -19,8 +21,11 @@ class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private val star3: ImageView = itemView.findViewById(R.id.star_icon4)
     private val star4: ImageView = itemView.findViewById(R.id.star_icon5)
 
+    var movie: Movie? = null
+
 
     fun bind(movie: Movie){
+        this.movie = movie
         title.setText(movie.title)
         genre.setText(movie.genre)
         picture.setImageResource(movie.imgId)
@@ -36,6 +41,21 @@ class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view) {
             }
         }
 
+        picture.setOnClickListener {
+            onClick(picture)
+        }
     }
+
+    fun onClick(v: View?) {
+        Log.d("LOG", "onclick")
+        var fragmentMovieDetails: FragmentMovieDetails = FragmentMovieDetails.newInstance(movie!!)
+        fragmentMovieDetails.apply {
+            Log.d("LOG", "" + activity )
+            activity?.supportFragmentManager
+                    ?.beginTransaction()
+                    ?.add(R.id.frame, this, FRAGMENT_MOVIE_DETAILS_TAG)
+                    ?.addToBackStack(FRAGMENT_MOVIE_DETAILS_TAG)
+                    ?.commit()
+        }    }
 }
 

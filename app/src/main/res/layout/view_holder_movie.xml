@@ -19,7 +19,7 @@
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
         android:clickable="true"
-        android:onClick="movieDetailsClick"
+
         />
     <ImageView
         android:id="@+id/bgg"
