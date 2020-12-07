@@ -351,7 +351,6 @@
             android:lineSpacingExtra="4sp"
             android:gravity="center_vertical"
             android:textSize="14sp"
-            android:lineHeight="20dp"
             />
 
         <TextView
