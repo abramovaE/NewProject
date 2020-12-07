@@ -12,5 +12,8 @@
     <color name="label">#D8D8D8</color>
     <color name="rasp">#FF3466</color>
     <color name="reviews">#6D6D80</color>
+    <color name="dark_grey"> #565665</color>
+
+
 
 </resources>
