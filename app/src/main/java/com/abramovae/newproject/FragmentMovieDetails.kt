@@ -8,18 +8,21 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.listOf as listOf1
 
-class FragmentMovieDetails: Fragment(){
+class FragmentMovieDetails: Fragment(), View.OnClickListener{
 
 
     companion object {
+
+
+        val MOVIE_TAG: String = "movie"
+
         fun newInstance(movie: Movie): FragmentMovieDetails {
             val args = Bundle()
-            args.putParcelable("movie", movie)
+            args.putParcelable(MOVIE_TAG, movie)
             val fragment = FragmentMovieDetails()
             fragment.arguments = args
             return fragment
@@ -34,7 +37,7 @@ class FragmentMovieDetails: Fragment(){
     ): View{
 
         val arg: Bundle? = arguments
-        val movie: Movie = arg?.get("movie") as Movie
+        val movie: Movie = arg?.get(MOVIE_TAG) as Movie
         var view = inflater.inflate(R.layout.fragment_movies_details, container, false)
 
         val backGround = view.findViewById<ImageView>(R.id.imageView)
@@ -42,6 +45,9 @@ class FragmentMovieDetails: Fragment(){
         val age:TextView = view.findViewById(R.id.age)
         val genre:TextView = view.findViewById(R.id.movieGenre)
         val reviews: TextView = view.findViewById(R.id.movieReviews)
+        val backBtn: TextView = view.findViewById(R.id.backBtn)
+
+        backBtn.setOnClickListener(this)
 
         backGround.setImageResource(movie.imgId);
         movieName.text = movie.title
@@ -64,19 +70,19 @@ class FragmentMovieDetails: Fragment(){
         Log.d("LOG", movie.title)
 
         var list = view.findViewById<RecyclerView>(R.id.rvActors)
-        var a1: Actor  = Actor("actor one", R.drawable.movie0)
-        var a2: Actor = Actor("actor two",  R.drawable.movie1)
-        var a3: Actor  = Actor("actor three",  R.drawable.movie2)
-        var a4: Actor = Actor("actor four",  R.drawable.movie3)
-        var a5: Actor  = Actor("actor five",  R.drawable.movie1)
-        var a6: Actor = Actor("actor six",  R.drawable.movie5)
 
-        var actors = listOf1(a1, a2, a3, a4, a5)
 
 //        var l = GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false)
         list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        list.adapter = ActorsAdapter(actors)
+        list.adapter = ActorsAdapter(movie)
         return view
+    }
+
+    override fun onClick(v: View?) {
+        if(v!!.id == R.id.backBtn){
+            var fm = activity!!.supportFragmentManager
+            fm.popBackStack()
+        }
     }
 
 }

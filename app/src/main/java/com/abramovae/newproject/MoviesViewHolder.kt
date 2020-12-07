@@ -1,13 +1,11 @@
 package com.abramovae.newproject
 
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view){
-    val FRAGMENT_MOVIE_DETAILS_TAG = "FRAGMENT_MOVIE_DETAILS"
 
     private val title: TextView = itemView.findViewById(R.id.name)
     private val picture: ImageView = itemView.findViewById(R.id.bgg)
@@ -40,22 +38,5 @@ class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view){
                 element.setImageResource(R.drawable.star2)
             }
         }
-
-        picture.setOnClickListener {
-            onClick(picture)
-        }
     }
-
-    fun onClick(v: View?) {
-        Log.d("LOG", "onclick")
-        var fragmentMovieDetails: FragmentMovieDetails = FragmentMovieDetails.newInstance(movie!!)
-        fragmentMovieDetails.apply {
-            Log.d("LOG", "" + activity )
-            activity?.supportFragmentManager
-                    ?.beginTransaction()
-                    ?.add(R.id.frame, this, FRAGMENT_MOVIE_DETAILS_TAG)
-                    ?.addToBackStack(FRAGMENT_MOVIE_DETAILS_TAG)
-                    ?.commit()
-        }    }
 }
-

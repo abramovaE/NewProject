@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.util.ArrayList
 
-class FragmentMoviesList: Fragment(){
+class FragmentMoviesList: Fragment(), ClickListener{
+
+    val FRAGMENT_MOVIE_DETAILS_TAG = "FRAGMENT_MOVIE_DETAILS"
+
+
 
     companion object {
-        fun newInstance(movies: ArrayList<Movie>): FragmentMoviesList {
+        fun newInstance(): FragmentMoviesList {
             val args = Bundle()
-            args.putParcelableArrayList("movies", movies as ArrayList<Movie>)
             val fragment = FragmentMoviesList()
             fragment.arguments = args
             return fragment
@@ -26,16 +29,32 @@ class FragmentMoviesList: Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val arg: Bundle? = arguments
-        val movies: ArrayList<Movie> =  arg?.getParcelableArrayList<Movie>("movies") as ArrayList<Movie>
 
         var view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         var list = view.findViewById<RecyclerView>(R.id.rvMovies)
 
-
         list.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
-        list.adapter = MoviesAdapter(movies);
-
+        list.adapter = MoviesAdapter(this);
         return view;
+    }
+
+
+
+
+    fun toFragmentMovieDetails(movie: Movie){
+        var fm = activity!!.supportFragmentManager
+        var fragmentMovieDetails = FragmentMovieDetails.newInstance(movie)
+        fragmentMovieDetails?.apply {
+            fm
+            ?.beginTransaction()
+                    ?.add(R.id.frame, this, FRAGMENT_MOVIE_DETAILS_TAG)
+                    ?.addToBackStack(FRAGMENT_MOVIE_DETAILS_TAG)
+                    ?.commit()
+        }
+    }
+
+
+    override fun onClick(movie: Movie) {
+        toFragmentMovieDetails(movie)
     }
 }
