@@ -42,7 +42,7 @@ class FragmentMoviesList: Fragment(), ClickListener{
 
 
     fun toFragmentMovieDetails(movie: Movie){
-        var fm = activity!!.supportFragmentManager
+        var fm = this.fragmentManager
         var fragmentMovieDetails = FragmentMovieDetails.newInstance(movie)
         fragmentMovieDetails?.apply {
             fm

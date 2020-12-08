@@ -15,9 +15,8 @@ import kotlin.collections.listOf as listOf1
 class FragmentMovieDetails: Fragment(), View.OnClickListener{
 
 
+
     companion object {
-
-
         val MOVIE_TAG: String = "movie"
 
         fun newInstance(movie: Movie): FragmentMovieDetails {
@@ -78,10 +77,11 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         return view
     }
 
-    override fun onClick(v: View?) {
-        if(v!!.id == R.id.backBtn){
-            var fm = activity!!.supportFragmentManager
-            fm.popBackStack()
+    override fun onClick(v: View) {
+        if(v.id == R.id.backBtn){
+            this.fragmentManager?.popBackStack()
+//            var fm = activity!!.supportFragmentManager
+//            fm.popBackStack()
         }
     }
 
