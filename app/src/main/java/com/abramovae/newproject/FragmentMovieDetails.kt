@@ -1,5 +1,6 @@
 package com.abramovae.newproject
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.academy.fundamentals.homework.features.data.Movie
+import com.bumptech.glide.Glide
 import kotlin.collections.listOf as listOf1
 
 class FragmentMovieDetails: Fragment(), View.OnClickListener{
@@ -45,14 +48,23 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         val genre:TextView = view.findViewById(R.id.movieGenre)
         val reviews: TextView = view.findViewById(R.id.movieReviews)
         val backBtn: TextView = view.findViewById(R.id.backBtn)
+        val overView: TextView = view.findViewById(R.id.overview)
 
         backBtn.setOnClickListener(this)
 
-        backGround.setImageResource(movie.imgId);
+        Glide.with(this).load(Uri.parse(movie.backdrop)).into(backGround)
         movieName.text = movie.title
-        age.text = "" + movie.age + "+"
-        genre.text = movie.genre
-        reviews.text = "" + movie.reviews + " reviews"
+        genre.text = movie.genres.toString().removePrefix("[").removeSuffix("]")
+        reviews.text = "" + " reviews"
+        overView.setText(movie.overview)
+
+        reviews.setText("" + "reviews")
+        if(movie.adult){
+            age.setText("16+");
+        } else{
+            age.setText("13+");
+        }
+
 
         val star0: ImageView = view.findViewById(R.id.star0)
         val star1: ImageView = view.findViewById(R.id.star1)
@@ -62,11 +74,11 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         var stars = listOf1(star0, star1, star2, star3, star4);
         for( (index, element) in stars.withIndex()){
             element.setImageResource(R.drawable.star)
-            if(index < movie.stars){
+            if(index < movie.getRating()){
                 element.setImageResource(R.drawable.star2)
             }
         }
-        Log.d("LOG", movie.title)
+        Log.d("LOG", movie.title.toString())
 
         var list = view.findViewById<RecyclerView>(R.id.rvActors)
 

@@ -1,11 +1,16 @@
 package com.abramovae.newproject
 
+import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.android.academy.fundamentals.homework.features.data.Movie
+import com.bumptech.glide.Glide
 
 class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view){
+
+
 
     private val title: TextView = itemView.findViewById(R.id.name)
     private val picture: ImageView = itemView.findViewById(R.id.bgg)
@@ -25,16 +30,19 @@ class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view){
     fun bind(movie: Movie){
         this.movie = movie
         title.setText(movie.title)
-        genre.setText(movie.genre)
-        picture.setImageResource(movie.imgId)
-        dur.setText("" + movie.dur + " min")
-        reviews.setText("" + movie.reviews + "reviews")
-        age.setText("" + movie.age + "+")
-
+        Glide.with(itemView.context).load(Uri.parse(movie.poster)).into(picture)
+        dur.setText("" + movie.runtime + " min")
+        reviews.setText("" + "reviews")
+        if(movie.adult){
+            age.setText("16+");
+        } else{
+            age.setText("13+");
+        }
+        genre.setText(movie.genres.toString().removePrefix("[").removeSuffix("]"))
         var stars = listOf(star0, star1, star2, star3, star4);
         for( (index, element) in stars.withIndex()){
             element.setImageResource(R.drawable.star)
-            if(index < movie.stars){
+            if(index < movie.getRating()){
                 element.setImageResource(R.drawable.star2)
             }
         }

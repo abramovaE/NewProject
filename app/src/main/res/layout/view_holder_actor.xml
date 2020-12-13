@@ -22,12 +22,12 @@
         android:layout_marginEnd="8dp"
         android:src="@drawable/movie0"
         android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 
@@ -35,11 +35,12 @@
     <TextView
         android:id="@+id/nameActor"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/robert_downey_jr"
 
+        android:lineHeight="16dp"
         android:textColor="@color/label"
         android:textStyle="bold"
         android:textSize="12sp"
