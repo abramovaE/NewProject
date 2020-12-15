@@ -31,12 +31,12 @@ class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view){
         this.movie = movie
         title.setText(movie.title)
         Glide.with(itemView.context).load(Uri.parse(movie.poster)).into(picture)
-        dur.setText("" + movie.runtime + " min")
-        reviews.setText("" + "reviews")
+        dur.setText("" + movie.runtime + itemView.context.getString(R.string.min))
+        reviews.setText(itemView.context.getString(R.string.reviews))
         if(movie.adult){
-            age.setText("16+");
+            age.setText(itemView.context.getString(R.string.age16));
         } else{
-            age.setText("13+");
+            age.setText(itemView.context.getString(R.string.age13));
         }
         genre.setText(movie.genres.toString().removePrefix("[").removeSuffix("]"))
         var stars = listOf(star0, star1, star2, star3, star4);

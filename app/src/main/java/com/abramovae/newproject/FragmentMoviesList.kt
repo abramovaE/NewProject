@@ -16,9 +16,6 @@ class FragmentMoviesList: Fragment(), ClickListener{
 
     val FRAGMENT_MOVIE_DETAILS_TAG = "FRAGMENT_MOVIE_DETAILS"
 
-
-
-
     companion object {
         fun newInstance(movies: List<Movie>): FragmentMoviesList {
             val args = Bundle()
@@ -37,14 +34,10 @@ class FragmentMoviesList: Fragment(), ClickListener{
         var view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         var list = view.findViewById<RecyclerView>(R.id.rvMovies)
         var movies = arguments?.getParcelableArrayList<Movie>("movies")
-        Log.d("TAG", "movies: " + movies)
-
         list.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
         list.adapter = movies?.let { MoviesAdapter(this, it) };
         return view;
     }
-
-
 
 
     fun toFragmentMovieDetails(movie: Movie){

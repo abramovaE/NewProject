@@ -50,9 +50,5 @@ class MainActivity : AppCompatActivity(){
 
     private suspend fun readFromFile() = withContext(Dispatchers.IO) {
         movies = loadMovies(this@MainActivity)
-
-
-        Log.d("TAG 1", "movies: " + movies)
-
     }
 }
