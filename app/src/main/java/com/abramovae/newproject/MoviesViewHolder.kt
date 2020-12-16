@@ -31,7 +31,7 @@ class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view){
         this.movie = movie
         title.setText(movie.title)
         Glide.with(itemView.context).load(Uri.parse(movie.poster)).into(picture)
-        dur.setText("" + movie.runtime + itemView.context.getString(R.string.min))
+        dur.text = itemView.context.getString(R.string.min, movie.runtime)
         reviews.setText(itemView.context.getString(R.string.reviews))
         if(movie.adult){
             age.setText(itemView.context.getString(R.string.age16));

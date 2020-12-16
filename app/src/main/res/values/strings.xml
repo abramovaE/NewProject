@@ -35,5 +35,7 @@
     <string name="reviews">\" reviews\"</string>
     <string name="age16">16+</string>
     <string name="age13">13+</string>
-    <string name="min">\" min\"</string>
+    <string name="min">%1$d min</string>
+<!--    <string name="min1">$1%d minutes</string>-->
+
 </resources>
