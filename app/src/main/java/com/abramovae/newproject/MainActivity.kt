@@ -3,7 +3,8 @@ package com.abramovae.newproject
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import com.abramovae.newproject.view.FragmentMovieDetails
+import com.abramovae.newproject.view.FragmentMoviesList
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.android.academy.fundamentals.homework.features.data.loadMovies
 import kotlinx.coroutines.*
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity(){
 
     private var fragmentMovieDetails: FragmentMovieDetails? = null
     private var fragmentMoviesList: FragmentMoviesList? = null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

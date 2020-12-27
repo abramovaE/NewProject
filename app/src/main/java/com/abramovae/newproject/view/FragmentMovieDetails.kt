@@ -1,21 +1,27 @@
-package com.abramovae.newproject
+package com.abramovae.newproject.view
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.abramovae.newproject.R
+import com.abramovae.newproject.viewModel.MovieDetailsVM
+import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.bumptech.glide.Glide
 import kotlin.collections.listOf as listOf1
 
 class FragmentMovieDetails: Fragment(), View.OnClickListener{
+
+    private lateinit var viewModel: MovieDetailsVM
 
     companion object {
         val MOVIE_TAG: String = "movie"
@@ -80,6 +86,13 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         var list = view.findViewById<RecyclerView>(R.id.rvActors)
         list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         list.adapter = ActorsAdapter(movie)
+
+        viewModel = ViewModelProvider(this,
+            MovieDetailsVM.Factory(movie)
+        ).get(MovieDetailsVM::class.java)
+        viewModel.movie.observe(this.viewLifecycleOwner, Observer {updateMovie()})
+
+
         return view
     }
 
@@ -87,5 +100,11 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         if(v.id == R.id.backBtn){
             this.fragmentManager?.popBackStack()
         }
+    }
+
+
+
+    private fun updateMovie() {
+
     }
 }

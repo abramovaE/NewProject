@@ -1,20 +1,26 @@
-package com.abramovae.newproject
+package com.abramovae.newproject.view
 
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.abramovae.newproject.*
+import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
-import java.util.ArrayList
 
-class FragmentMoviesList: Fragment(), ClickListener{
+
+class FragmentMoviesList: Fragment(),
+    ClickListener {
 
     val FRAGMENT_MOVIE_DETAILS_TAG = "FRAGMENT_MOVIE_DETAILS"
+    private lateinit var viewModel: MoviesVM
+
+
 
     companion object {
         fun newInstance(movies: List<Movie>): FragmentMoviesList {
@@ -34,15 +40,32 @@ class FragmentMoviesList: Fragment(), ClickListener{
         var view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         var list = view.findViewById<RecyclerView>(R.id.rvMovies)
         var movies = arguments?.getParcelableArrayList<Movie>("movies")
+
+
         list.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
-        list.adapter = movies?.let { MoviesAdapter(this, it) };
+        list.adapter = movies?.let {
+            MoviesAdapter(
+                this,
+                it
+            )
+        };
+
+        viewModel = ViewModelProvider(this,
+            MoviesVM.Factory(movies as ArrayList<Movie>)
+        ).get(MoviesVM::class.java)
+        viewModel.moviesList.observe(this.viewLifecycleOwner, Observer {updateMovies()})
+
+
         return view;
     }
 
 
     fun toFragmentMovieDetails(movie: Movie){
         var fm = this.fragmentManager
-        var fragmentMovieDetails = FragmentMovieDetails.newInstance(movie)
+        var fragmentMovieDetails =
+            FragmentMovieDetails.newInstance(
+                movie
+            )
         fragmentMovieDetails?.apply {
             fm
             ?.beginTransaction()
@@ -56,4 +79,10 @@ class FragmentMoviesList: Fragment(), ClickListener{
     override fun onClick(movie: Movie) {
         toFragmentMovieDetails(movie)
     }
+
+    private fun updateMovies() {
+
+    }
 }
+
+
