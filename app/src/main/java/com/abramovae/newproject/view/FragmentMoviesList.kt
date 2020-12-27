@@ -1,6 +1,7 @@
 package com.abramovae.newproject.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,8 @@ import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
 
 
-class FragmentMoviesList: Fragment(),
-    ClickListener {
+class FragmentMoviesList: Fragment()
+     {
 
     val FRAGMENT_MOVIE_DETAILS_TAG = "FRAGMENT_MOVIE_DETAILS"
     private lateinit var viewModel: MoviesVM
@@ -42,22 +43,22 @@ class FragmentMoviesList: Fragment(),
         var movies = arguments?.getParcelableArrayList<Movie>("movies")
 
 
+        viewModel = ViewModelProvider(this,
+            MoviesVM.Factory()
+        ).get(MoviesVM::class.java)
         list.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
         list.adapter = movies?.let {
-            MoviesAdapter(
-                this,
-                it
-            )
+            MoviesAdapter(it, viewModel)
         };
-
-        viewModel = ViewModelProvider(this,
-            MoviesVM.Factory(movies as ArrayList<Movie>)
-        ).get(MoviesVM::class.java)
-        viewModel.moviesList.observe(this.viewLifecycleOwner, Observer {updateMovies()})
-
 
         return view;
     }
+
+         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+             super.onViewCreated(view, savedInstanceState)
+
+             viewModel.selectedMovie.observe(this.viewLifecycleOwner, Observer {this::selected})
+         }
 
 
     fun toFragmentMovieDetails(movie: Movie){
@@ -76,12 +77,14 @@ class FragmentMoviesList: Fragment(),
     }
 
 
-    override fun onClick(movie: Movie) {
+//    override fun onClick(movie: Movie) {
+//        toFragmentMovieDetails(movie)
+//    }
+
+
+    fun selected(movie: Movie){
+        Log.d("TAG", "selected")
         toFragmentMovieDetails(movie)
-    }
-
-    private fun updateMovies() {
-
     }
 }
 

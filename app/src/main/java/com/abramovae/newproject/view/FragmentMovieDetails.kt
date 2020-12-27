@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abramovae.newproject.R
-import com.abramovae.newproject.viewModel.MovieDetailsVM
 import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.bumptech.glide.Glide
@@ -21,7 +20,7 @@ import kotlin.collections.listOf as listOf1
 
 class FragmentMovieDetails: Fragment(), View.OnClickListener{
 
-    private lateinit var viewModel: MovieDetailsVM
+    private lateinit var viewModel: MoviesVM
 
     companion object {
         val MOVIE_TAG: String = "movie"
@@ -88,9 +87,9 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         list.adapter = ActorsAdapter(movie)
 
         viewModel = ViewModelProvider(this,
-            MovieDetailsVM.Factory(movie)
-        ).get(MovieDetailsVM::class.java)
-        viewModel.movie.observe(this.viewLifecycleOwner, Observer {updateMovie()})
+            MoviesVM.Factory()
+        ).get(MoviesVM::class.java)
+        viewModel.selectedMovie.observe(this.viewLifecycleOwner, Observer {})
 
 
         return view
@@ -100,11 +99,5 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         if(v.id == R.id.backBtn){
             this.fragmentManager?.popBackStack()
         }
-    }
-
-
-
-    private fun updateMovie() {
-
     }
 }
