@@ -1,16 +1,13 @@
 package com.abramovae.newproject.view
 
-import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -94,7 +91,7 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         }
     }
 
-    fun setMovieDetails(movie: Movie){
+    private fun setMovieDetails(movie: Movie){
         Glide.with(this).load(Uri.parse(movie.backdrop)).into(backGround)
         movieName.text = movie.title
         genre.text = movie.genres.toString().removePrefix("[").removeSuffix("]")

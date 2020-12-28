@@ -11,9 +11,12 @@ import com.android.academy.fundamentals.homework.features.data.Movie
 import java.util.ArrayList
 
 
-class MoviesAdapter(val movies: ArrayList<Movie>, private  val viewModel: MoviesVM): RecyclerView.Adapter<MoviesViewHolder>() {
+class MoviesAdapter(private val clickListener: ClickListener, var movies: ArrayList<Movie>): RecyclerView.Adapter<MoviesViewHolder>() {
 
 
+    fun setNewMovies(movies: List<Movie>){
+        this.movies = movies as ArrayList<Movie>
+    }
 
 
     override fun getItemCount(): Int {
@@ -42,11 +45,13 @@ class MoviesAdapter(val movies: ArrayList<Movie>, private  val viewModel: Movies
         holder.bind(getItem(position))
         holder.itemView.findViewById<View>(R.id.bg).setOnClickListener {
 
-            viewModel.select(getItem(position))
-//            clickListener.onClick(getItem(position))
+//            viewModel.select(getItem(position))
+            clickListener.onClick(getItem(position))
         }
 
     }
+
+
 }
 
 

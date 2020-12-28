@@ -1,27 +1,28 @@
 package com.abramovae.newproject.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abramovae.newproject.*
+import com.abramovae.newproject.MainActivity
+import com.abramovae.newproject.R
 import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
 
 
-class FragmentMoviesList: Fragment()
+class FragmentMoviesList: Fragment(), ClickListener
      {
 
     val FRAGMENT_MOVIE_DETAILS_TAG = "FRAGMENT_MOVIE_DETAILS"
     private lateinit var viewModel: MoviesVM
 
+         lateinit var adapter: MoviesAdapter
 
 
     companion object {
@@ -46,9 +47,9 @@ class FragmentMoviesList: Fragment()
         viewModel = ViewModelProvider((activity as MainActivity), MoviesVM.Factory()).get(MoviesVM::class.java)
 
         list.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
-        list.adapter = movies?.let {
-            MoviesAdapter(it, viewModel)
-        };
+        adapter = MoviesAdapter(this, movies as java.util.ArrayList<Movie>)
+        list.adapter = adapter
+
 
         return view;
     }
@@ -57,6 +58,7 @@ class FragmentMoviesList: Fragment()
              super.onViewCreated(view, savedInstanceState)
 
              viewModel.selectedMovie.observe(this.viewLifecycleOwner, this::selected)
+             viewModel.movies.observe(this.viewLifecycleOwner, this::updateAdapter)
          }
 
 
@@ -78,6 +80,15 @@ class FragmentMoviesList: Fragment()
     fun selected(movie: Movie){
         toFragmentMovieDetails(movie)
     }
-}
+         private fun updateAdapter(movies: List<Movie>) {
+             adapter.setNewMovies(movies)
+             adapter.notifyDataSetChanged()
+         }
+
+         override fun onClick(movie: Movie) {
+             viewModel.select(movie)
+//             toFragmentMovieDetails(movie)
+         }
+     }
 
 

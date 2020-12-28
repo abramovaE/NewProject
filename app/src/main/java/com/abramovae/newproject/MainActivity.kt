@@ -31,26 +31,28 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        MyViewModel model = ViewModelProviders.of(this).get(MyViewModel.class);
         viewModel = ViewModelProvider(this,
             MoviesVM.Factory()
         ).get(MoviesVM::class.java)
 
         scope.async{
-            var job = async{ readFromFile()}.await()
-            if (savedInstanceState == null) {
-                fragmentMoviesList = FragmentMoviesList.newInstance(movies)
-                fragmentMoviesList?.apply {
-                    supportFragmentManager.beginTransaction()
-                        .add(R.id.frame, this, FRAGMENT_MOVIES_LIST_TAG)
-                        .commit()
-                }
-            } else {
-                fragmentMovieDetails =
-                    supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIE_DETAILS_TAG) as? FragmentMovieDetails
-                fragmentMoviesList =
-                    supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIES_LIST_TAG) as? FragmentMoviesList
+            var job = async{
+                readFromFile()
+            }.await()
+        }
+
+        if (savedInstanceState == null) {
+            fragmentMoviesList = FragmentMoviesList.newInstance(movies)
+            fragmentMoviesList?.apply {
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.frame, this, FRAGMENT_MOVIES_LIST_TAG)
+                    .commit()
             }
+        } else {
+            fragmentMovieDetails =
+                supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIE_DETAILS_TAG) as? FragmentMovieDetails
+            fragmentMoviesList =
+                supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIES_LIST_TAG) as? FragmentMoviesList
         }
     }
 
@@ -61,5 +63,6 @@ class MainActivity : AppCompatActivity(){
 
     private suspend fun readFromFile() = withContext(Dispatchers.IO) {
         movies = loadMovies(this@MainActivity)
+        viewModel.setMovies(movies)
     }
 }
