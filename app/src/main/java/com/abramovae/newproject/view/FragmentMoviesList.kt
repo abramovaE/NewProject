@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abramovae.newproject.*
@@ -42,10 +43,8 @@ class FragmentMoviesList: Fragment()
         var list = view.findViewById<RecyclerView>(R.id.rvMovies)
         var movies = arguments?.getParcelableArrayList<Movie>("movies")
 
+        viewModel = ViewModelProvider((activity as MainActivity), MoviesVM.Factory()).get(MoviesVM::class.java)
 
-        viewModel = ViewModelProvider(this,
-            MoviesVM.Factory()
-        ).get(MoviesVM::class.java)
         list.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
         list.adapter = movies?.let {
             MoviesAdapter(it, viewModel)
@@ -57,7 +56,7 @@ class FragmentMoviesList: Fragment()
          override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
              super.onViewCreated(view, savedInstanceState)
 
-             viewModel.selectedMovie.observe(this.viewLifecycleOwner, Observer {this::selected})
+             viewModel.selectedMovie.observe(this.viewLifecycleOwner, this::selected)
          }
 
 
@@ -65,7 +64,6 @@ class FragmentMoviesList: Fragment()
         var fm = this.fragmentManager
         var fragmentMovieDetails =
             FragmentMovieDetails.newInstance(
-                movie
             )
         fragmentMovieDetails?.apply {
             fm
@@ -77,13 +75,7 @@ class FragmentMoviesList: Fragment()
     }
 
 
-//    override fun onClick(movie: Movie) {
-//        toFragmentMovieDetails(movie)
-//    }
-
-
     fun selected(movie: Movie){
-        Log.d("TAG", "selected")
         toFragmentMovieDetails(movie)
     }
 }
