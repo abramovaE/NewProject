@@ -34,8 +34,6 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
     private lateinit var list: RecyclerView
 
     companion object {
-        val MOVIE_TAG: String = "movie"
-
         fun newInstance(): FragmentMovieDetails {
             val args = Bundle()
             val fragment = FragmentMovieDetails()
@@ -47,7 +45,7 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProvider((activity as MainActivity), MoviesVM.Factory()).get(MoviesVM::class.java)
+        viewModel = ViewModelProvider((activity as MainActivity), MoviesVM.Factory(activity as MainActivity)).get(MoviesVM::class.java)
         viewModel.selectedMovie.observe(this.viewLifecycleOwner, this::setMovieDetails)
 
 

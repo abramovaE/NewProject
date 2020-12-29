@@ -14,6 +14,7 @@ import com.abramovae.newproject.MainActivity
 import com.abramovae.newproject.R
 import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
+import java.util.ArrayList
 
 
 class FragmentMoviesList: Fragment(), ClickListener
@@ -26,12 +27,8 @@ class FragmentMoviesList: Fragment(), ClickListener
 
 
     companion object {
-        fun newInstance(movies: List<Movie>): FragmentMoviesList {
-            val args = Bundle()
-            args.putParcelableArrayList("movies", movies as ArrayList<Movie>)
-            val fragment = FragmentMoviesList()
-            fragment.arguments = args
-            return fragment
+        fun newInstance(): FragmentMoviesList {
+            return FragmentMoviesList()
         }
     }
 
@@ -42,12 +39,14 @@ class FragmentMoviesList: Fragment(), ClickListener
     ): View? {
         var view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         var list = view.findViewById<RecyclerView>(R.id.rvMovies)
-        var movies = arguments?.getParcelableArrayList<Movie>("movies")
 
-        viewModel = ViewModelProvider((activity as MainActivity), MoviesVM.Factory()).get(MoviesVM::class.java)
+        viewModel = ViewModelProvider((activity as MainActivity), MoviesVM.Factory(activity as MainActivity)).get(MoviesVM::class.java)
+
+        viewModel.load()
+
 
         list.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
-        adapter = MoviesAdapter(this, movies as java.util.ArrayList<Movie>)
+        adapter = MoviesAdapter(this)
         list.adapter = adapter
 
 
