@@ -10,6 +10,7 @@ interface IMoviesRepo{
 
 class MoviesRepo(private val context: Context): IMoviesRepo{
     override suspend fun getMovies(): List<Movie> {
+        Thread.sleep(10000)
         return loadMovies(context)
     }
 }

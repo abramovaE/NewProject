@@ -5,7 +5,9 @@ import androidx.lifecycle.*
 import com.abramovae.newproject.repo.IMoviesRepo
 import com.abramovae.newproject.repo.MoviesRepo
 import com.android.academy.fundamentals.homework.features.data.Movie
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.IllegalArgumentException
 
 class MoviesVM(private val repo: IMoviesRepo): ViewModel(){
@@ -14,25 +16,27 @@ class MoviesVM(private val repo: IMoviesRepo): ViewModel(){
     private val _selectedMovie = MutableLiveData<Movie>()
     val selectedMovie get() = _selectedMovie
 
+    private lateinit var data: List<Movie>
+
     private val _movies = MutableLiveData<List<Movie>>()
     val movies get() = _movies
 
 
     fun select(movie: Movie) {
         viewModelScope.launch {
-            _selectedMovie.value = movie
-        }
-    }
 
-    suspend fun setMovies(movies: List<Movie>){
-        viewModelScope.launch {
-            _movies.value = movies
+            _selectedMovie.value = movie
         }
     }
 
     fun load(){
         viewModelScope.launch{
-            _movies.value = repo.getMovies()
+
+            withContext(Dispatchers.IO) {
+                data = repo.getMovies()
+            }
+            _movies.value = data
+
         }
     }
 
