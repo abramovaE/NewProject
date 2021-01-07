@@ -13,5 +13,4 @@ class MoviesRepo(private val context: Context): IMoviesRepo{
     override suspend fun getMovies(): List<Movie> {
         return loadMovies(context)
     }
-
 }

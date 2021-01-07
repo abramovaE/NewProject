@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.*
 import com.abramovae.newproject.repo.IMoviesRepo
 import com.abramovae.newproject.repo.MoviesRepo
+import com.android.academy.fundamentals.homework.features.data.Genre
 import com.android.academy.fundamentals.homework.features.data.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,6 +22,11 @@ class MoviesVM(private val repo: IMoviesRepo): ViewModel(){
     val movies get() = _movies
 
 
+    private val _genres = MutableLiveData<List<Genre>>()
+    val genres get() = _genres
+
+
+
     fun select(movie: Movie) {
         viewModelScope.launch {
             _selectedMovie.value = movie
@@ -35,6 +41,10 @@ class MoviesVM(private val repo: IMoviesRepo): ViewModel(){
             }
             _movies.value = data
         }
+    }
+
+    fun setMovies(m: List<Movie>){
+        _movies.value = m
     }
 
     @Suppress("UNCHECKED_CAST")
