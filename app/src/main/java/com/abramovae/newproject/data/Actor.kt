@@ -2,10 +2,19 @@ package com.android.academy.fundamentals.homework.features.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Actor(
+
+    @SerialName("id")
     val id: Int,
+
+    @SerialName("name")
     val name: String?,
+
+    @SerialName("profile_path")
     val picture: String?
 ): Parcelable{
     constructor(parcel: Parcel) : this(

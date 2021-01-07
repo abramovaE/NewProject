@@ -16,7 +16,6 @@ class MoviesVM(private val repo: IMoviesRepo): ViewModel(){
     private val _selectedMovie = MutableLiveData<Movie>()
     val selectedMovie get() = _selectedMovie
 
-    private lateinit var data: List<Movie>
 
     private val _movies = MutableLiveData<List<Movie>>()
     val movies get() = _movies
@@ -24,19 +23,17 @@ class MoviesVM(private val repo: IMoviesRepo): ViewModel(){
 
     fun select(movie: Movie) {
         viewModelScope.launch {
-
             _selectedMovie.value = movie
         }
     }
 
     fun load(){
+        lateinit var data: List<Movie>
         viewModelScope.launch{
-
             withContext(Dispatchers.IO) {
                 data = repo.getMovies()
             }
             _movies.value = data
-
         }
     }
 
