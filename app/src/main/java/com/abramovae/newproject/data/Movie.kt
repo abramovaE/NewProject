@@ -61,4 +61,6 @@ data class Movie(
 
         return ((ratings/2.0).roundToInt());
     }
+
+
 }

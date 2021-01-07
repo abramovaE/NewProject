@@ -1,10 +1,11 @@
-package com.abramovae.newproject
+package com.abramovae.newproject.view
 
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.abramovae.newproject.R
 import com.android.academy.fundamentals.homework.features.data.Actor
 import com.bumptech.glide.Glide
 

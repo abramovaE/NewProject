@@ -1,8 +1,9 @@
-package com.abramovae.newproject
+package com.abramovae.newproject.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.abramovae.newproject.R
 import com.android.academy.fundamentals.homework.features.data.Actor
 import com.android.academy.fundamentals.homework.features.data.Movie
 

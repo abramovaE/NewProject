@@ -1,14 +1,21 @@
-package com.abramovae.newproject
+package com.abramovae.newproject.view
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.abramovae.newproject.R
 import com.android.academy.fundamentals.homework.features.data.Movie
 import java.util.ArrayList
 
 
-class MoviesAdapter(private val clickListener: ClickListener, val movies: ArrayList<Movie>): RecyclerView.Adapter<MoviesViewHolder>() {
+class MoviesAdapter(private val clickListener: ClickListener): RecyclerView.Adapter<MoviesViewHolder>() {
+
+    private var movies = emptyList<Movie>()
+
+    fun setNewMovies(movies: List<Movie>){
+        this.movies = movies as ArrayList<Movie>
+    }
 
 
     override fun getItemCount(): Int {
@@ -22,16 +29,26 @@ class MoviesAdapter(private val clickListener: ClickListener, val movies: ArrayL
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
-        val view =  MoviesViewHolder(inflater.inflate(R.layout.view_holder_movie, parent, false))
+        val view = MoviesViewHolder(
+            inflater.inflate(
+                R.layout.view_holder_movie,
+                parent,
+                false
+            )
+        )
 
         return view
     }
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
         holder.bind(getItem(position))
-        holder.itemView.findViewById<View>(R.id.bg).setOnClickListener { clickListener.onClick(getItem(position)) }
+        holder.itemView.findViewById<View>(R.id.bg).setOnClickListener {
+            clickListener.onClick(getItem(position))
+        }
 
     }
+
+
 }
 
 
