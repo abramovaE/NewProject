@@ -41,7 +41,6 @@ class FragmentMoviesList: Fragment(), ClickListener
         var list = view.findViewById<RecyclerView>(R.id.rvMovies)
 
         viewModel = ViewModelProvider((activity as MainActivity), MoviesVM.Factory(activity as MainActivity)).get(MoviesVM::class.java)
-
         viewModel.load()
 
 
@@ -55,7 +54,6 @@ class FragmentMoviesList: Fragment(), ClickListener
 
          override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
              super.onViewCreated(view, savedInstanceState)
-
              viewModel.selectedMovie.observe(this.viewLifecycleOwner, this::selected)
              viewModel.movies.observe(this.viewLifecycleOwner, this::updateAdapter)
          }

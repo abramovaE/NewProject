@@ -5,18 +5,27 @@ import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.lifecycle.viewModelScope
+import com.abramovae.newproject.BuildConfig
 import com.abramovae.newproject.MainActivity
+import com.abramovae.newproject.repo.LoadMoviesInt
 import com.abramovae.newproject.viewModel.MoviesVM
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.GlobalScope.coroutineContext
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
 import org.json.JSONObject
+import retrofit2.Retrofit
+import retrofit2.create
 import java.io.IOException
 import java.net.URL
+import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 
 
 private val jsonFormat = Json { ignoreUnknownKeys = true }
@@ -70,13 +79,34 @@ private suspend fun loadGenres(context: Context): List<Genre>{
             val results = JSONObject(content).getJSONArray("genres")
             val json = Json { ignoreUnknownKeys = true }
             genres =  json.decodeFromString<List<Genre>>(results.toString())
+            Log.d("tag", "genress: " + genres)
         }
     })
     return genres
 }
 
+private object RetrofitModule {
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
+    val httpClient = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .build()
 
-private suspend fun getMovies(context: Context): List<MovieTest> {
+    @Suppress("EXPERIMENTAL_API_USAGE")
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl("https://api.themoviedb.org")
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+        .client(httpClient)
+        .build()
+
+    val loadMoviesApi: LoadMoviesInt = retrofit.create()
+}
+
+
+private suspend fun getMovies(context: Context): List<MovieTest>  {
 
     val getMoviesUrl = URL("https://api.themoviedb.org/3/movie/popular?api_key=1bbcd34e71c300a0267ad1411ec2bc84&language=ru-Ru&page=1")
     val client = OkHttpClient()
@@ -87,13 +117,15 @@ private suspend fun getMovies(context: Context): List<MovieTest> {
     client.newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
             e.printStackTrace()
+
         }
 
         override fun onResponse(call: Call, response: Response) {
             val content = response.body?.string() ?: return
             val results = JSONObject(content).getJSONArray("results")
-//            val json = Json { ignoreUnknownKeys = true }
-            movies =  jsonFormat.decodeFromString<List<MovieTest>>(results.toString())
+            movies = jsonFormat.decodeFromString<List<MovieTest>>(results.toString())
+            Log.d("tag", "moviess: " + movies)
+
 
         }
     })
@@ -153,34 +185,32 @@ private suspend fun loadActors(id: Int): List<Actor> {
 
 internal suspend fun loadMovies(context: Context)  : List<Movie> {
     val scope = CoroutineScope(Dispatchers.Main)
-
-    var m: List<Movie> = ArrayList<Movie>()
     scope.async {
-        launch{ loadGenres(context) }
-        launch { getMovies(context) }
+        launch {
+            getMovies(context)
+        }
+        launch { loadGenres(context) }
     }.await()
 
+
     var actorsMap: ArrayList<Actor> = ArrayList<Actor>()
-
-    m = parseMovies(movies, genres, actorsMap)
-
-
-
-
-    return m
+    return parseMovies(actorsMap)
 }
 
-internal fun parseMovies(
-        jsonMovies: List<MovieTest>,
-    genres: List<Genre>,
+
+
+private fun parseMovies(
+
     actors: List<Actor>
-): List<Movie> {
+) : List<Movie> {
     val genresMap = genres.associateBy { it.id }
     val actorsMap = actors.associateBy { it.id }
+    Log.d("tag", "parse genres: " + genres)
+    Log.d("tag", "parse movies: " + movies)
 
 //    val jsonMovies = jsonFormat.decodeFromString<List<JsonMovie>>(data)
 
-    var m =  jsonMovies.map { jsonMovie ->
+    var m =  movies.map { jsonMovie ->
         Movie(
             id = jsonMovie.id,
             title = jsonMovie.title,
@@ -198,7 +228,6 @@ internal fun parseMovies(
             }
         )
     }
-
+    Log.d("tag", "movies: " + m)
     return m
-
 }
