@@ -29,8 +29,8 @@ import kotlin.random.Random
 
 
 private val jsonFormat = Json { ignoreUnknownKeys = true }
-var movies: List<MovieTest> = ArrayList<MovieTest>()
-var genres: List<Genre> = ArrayList<Genre>()
+//var movies: List<MovieTest> = ArrayList<MovieTest>()
+//var genres: List<Genre> = ArrayList<Genre>()
 
 
 //@Serializable
@@ -62,28 +62,28 @@ var genres: List<Genre> = ArrayList<Genre>()
 //    val adult: Boolean
 //)
 
-private suspend fun loadGenres(context: Context): List<Genre>{
-    val genresUrl = URL("https://api.themoviedb.org/3/genre/movie/list?api_key=1bbcd34e71c300a0267ad1411ec2bc84&language=ru-Ru")
-    val client = OkHttpClient()
-    val request = Request.Builder()
-            .get()
-            .url(genresUrl)
-            .build()
-    client.newCall(request).enqueue(object : Callback {
-        override fun onFailure(call: Call, e: IOException) {
-            e.printStackTrace()
-        }
-
-        override fun onResponse(call: Call, response: Response) {
-            val content = response.body?.string() ?: return
-            val results = JSONObject(content).getJSONArray("genres")
-            val json = Json { ignoreUnknownKeys = true }
-            genres =  json.decodeFromString<List<Genre>>(results.toString())
-            Log.d("tag", "genress: " + genres)
-        }
-    })
-    return genres
-}
+//private suspend fun loadGenres(): List<Genre>{
+//    val genresUrl = URL("https://api.themoviedb.org/3/genre/movie/list?api_key=1bbcd34e71c300a0267ad1411ec2bc84&language=ru-Ru")
+//    val client = OkHttpClient()
+//    val request = Request.Builder()
+//            .get()
+//            .url(genresUrl)
+//            .build()
+//    client.newCall(request).enqueue(object : Callback {
+//        override fun onFailure(call: Call, e: IOException) {
+//            e.printStackTrace()
+//        }
+//
+//        override fun onResponse(call: Call, response: Response) {
+//            val content = response.body?.string() ?: return
+//            val results = JSONObject(content).getJSONArray("genres")
+//            val json = Json { ignoreUnknownKeys = true }
+//            genres =  json.decodeFromString<List<Genre>>(results.toString())
+//            Log.d("tag", "genress: " + genres)
+//        }
+//    })
+//    return genres
+//}
 
 private object RetrofitModule {
     private val json = Json {
@@ -106,31 +106,31 @@ private object RetrofitModule {
 }
 
 
-private suspend fun getMovies(context: Context): List<MovieTest>  {
+//private suspend fun getMovies(): List<MovieTest>  {
 
-    val getMoviesUrl = URL("https://api.themoviedb.org/3/movie/popular?api_key=1bbcd34e71c300a0267ad1411ec2bc84&language=ru-Ru&page=1")
-    val client = OkHttpClient()
-    val request = Request.Builder()
-            .get()
-            .url(getMoviesUrl)
-            .build()
-    client.newCall(request).enqueue(object : Callback {
-        override fun onFailure(call: Call, e: IOException) {
-            e.printStackTrace()
-
-        }
-
-        override fun onResponse(call: Call, response: Response) {
-            val content = response.body?.string() ?: return
-            val results = JSONObject(content).getJSONArray("results")
-            movies = jsonFormat.decodeFromString<List<MovieTest>>(results.toString())
-            Log.d("tag", "moviess: " + movies)
-
-
-        }
-    })
-    return movies
-}
+//    val getMoviesUrl = URL("https://api.themoviedb.org/3/movie/popular?api_key=1bbcd34e71c300a0267ad1411ec2bc84&language=ru-Ru&page=1")
+//    val client = OkHttpClient()
+//    val request = Request.Builder()
+//            .get()
+//            .url(getMoviesUrl)
+//            .build()
+//    client.newCall(request).enqueue(object : Callback {
+//        override fun onFailure(call: Call, e: IOException) {
+//            e.printStackTrace()
+//
+//        }
+//
+//        override fun onResponse(call: Call, response: Response) {
+//            val content = response.body?.string() ?: return
+//            val results = JSONObject(content).getJSONArray("results")
+//            movies = jsonFormat.decodeFromString<List<MovieTest>>(results.toString())
+//            Log.d("tag", "moviess: " + movies)
+//
+//
+//        }
+//    })
+//    return movies
+//}
 
 private suspend fun loadActors(id: Int): List<Actor> {
     var actors: ArrayList<Actor> = ArrayList<Actor>()
@@ -183,13 +183,20 @@ private suspend fun loadActors(id: Int): List<Actor> {
 
 
 
-internal suspend fun loadMovies(context: Context)  : List<Movie> {
+internal suspend fun loadMovies()  : List<Movie> {
+
+    lateinit var data: List<Movie>
+
     val scope = CoroutineScope(Dispatchers.Main)
+
+
     scope.async {
         launch {
-            getMovies(context)
+//            getMovies()
         }
-        launch { loadGenres(context) }
+        launch {
+//            loadGenres()
+        }
     }.await()
 
 
@@ -203,31 +210,10 @@ private fun parseMovies(
 
     actors: List<Actor>
 ) : List<Movie> {
-    val genresMap = genres.associateBy { it.id }
-    val actorsMap = actors.associateBy { it.id }
-    Log.d("tag", "parse genres: " + genres)
-    Log.d("tag", "parse movies: " + movies)
+//    val genresMap = genres.associateBy { it.id }
+//    val actorsMap = actors.associateBy { it.id }
+////    Log.d("tag", "parse genres: " + genres)
+////    Log.d("tag", "parse movies: " + movies)
 
-//    val jsonMovies = jsonFormat.decodeFromString<List<JsonMovie>>(data)
-
-    var m =  movies.map { jsonMovie ->
-        Movie(
-            id = jsonMovie.id,
-            title = jsonMovie.title,
-            overview = jsonMovie.overview,
-            poster = jsonMovie.poster,
-            backdrop = jsonMovie.backdrop,
-            ratings = jsonMovie.ratings,
-            adult = jsonMovie.adult,
-            runtime = jsonMovie.runtime,
-            genres = jsonMovie.genres.map {
-                genresMap[it] ?: throw IllegalArgumentException("Genre not found")
-            },
-            actors = jsonMovie.actors.map {
-                actorsMap[it] ?: throw IllegalArgumentException("Actor not found")
-            }
-        )
-    }
-    Log.d("tag", "movies: " + m)
-    return m
+    return ArrayList<Movie>()
 }

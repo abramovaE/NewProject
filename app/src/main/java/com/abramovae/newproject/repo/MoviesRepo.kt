@@ -5,14 +5,14 @@ import com.android.academy.fundamentals.homework.features.data.*
 
 
 interface IMoviesRepo{
-    suspend fun getMovies(): List<Movie>
+//    suspend fun getMovies(): List<Movie>
 
 }
 
 class MoviesRepo(private val context: Context): IMoviesRepo{
-    override suspend fun getMovies(): List<Movie> {
+//    override suspend fun getMovies(){
 
 
-        return loadMovies(context)
-    }
+//        return loadMovies()
+//    }
 }

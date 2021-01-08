@@ -16,6 +16,7 @@ data class Actor(
 
     @SerialName("profile_path")
     val picture: String?
+
 ): Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readInt(),

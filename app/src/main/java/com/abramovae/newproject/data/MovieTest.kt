@@ -48,11 +48,6 @@ data class MovieTest(
         @SerialName("genre_ids")
         val genres: List<Int>,
 
-        @Transient
-        val actors: ArrayList<Actor> = ArrayList<Actor>()
-
-
-
 )
 {
 

@@ -2,53 +2,53 @@ package com.android.academy.fundamentals.homework.features.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.versionedparcelable.NonParcelField
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.math.roundToInt
 
-//@Serializable
+@Serializable
 data class Movie(
 
-//"genre_ids": [
-//14,
-//28,
-//12
-//],
-//
-//"popularity": 6017.605,
-//"release_date": "2020-12-16",
-//"video": false,
-//"vote_count": 2153
 
-//@SerialName("id")
+        @SerialName("id")
     val id: Int,
 
-//@SerialName("title")
+        @SerialName("title")
     val title: String?,
 
-//@SerialName("overview")
+        @SerialName("overview")
     val overview: String?,
 
-//@SerialName("poster_path")
+        @SerialName("poster_path")
     val poster: String?,
 
-//@SerialName("backdrop_path")
+        @SerialName("backdrop_path")
     val backdrop: String?,
 
-//@SerialName("vote_average")
+        @SerialName("vote_average")
     val ratings: Float,
 
-//@SerialName("adult")
+        @SerialName("adult")
     val adult: Boolean,
 
-//@SerialName("vote_count")
+        @SerialName("vote_count")
     val runtime: Int,
 
-//@SerialName("genre_ids")
-    val genres: List<Genre>,
+        @SerialName("genre_ids")
+    val genreIds: List<Int>,
 
-    val actors: List<Actor>): Parcelable{
+        var genres: List<Genre> = ArrayList<Genre>(),
+
+        var actors: List<Actor> = ArrayList<Actor>()
+): Parcelable{
+
+
+
     constructor(parcel: Parcel) : this(
+
+
+
         parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
@@ -57,9 +57,16 @@ data class Movie(
         parcel.readFloat(),
         parcel.readByte() != 0.toByte(),
         parcel.readInt(),
+            parcel.createIntArray()!!.toList(),
+
         parcel.createTypedArrayList(Genre)!!,
         parcel.createTypedArrayList(Actor)!!
     ) {
+    }
+
+
+    fun getRating(): Int{
+        return ((ratings/2.0).roundToInt());
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -71,6 +78,7 @@ data class Movie(
         parcel.writeFloat(ratings)
         parcel.writeByte(if (adult) 1 else 0)
         parcel.writeInt(runtime)
+        parcel.writeIntArray(genreIds.toIntArray())
         parcel.writeTypedList(genres)
         parcel.writeTypedList(actors)
     }
@@ -87,11 +95,6 @@ data class Movie(
         override fun newArray(size: Int): Array<Movie?> {
             return arrayOfNulls(size)
         }
-    }
-
-
-    fun getRating(): Int{
-        return ((ratings/2.0).roundToInt());
     }
 
 
