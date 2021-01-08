@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abramovae.newproject.MainActivity
 import com.abramovae.newproject.R
+import com.abramovae.newproject.repo.BuildConfig
 import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.bumptech.glide.Glide
@@ -90,7 +91,8 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
     }
 
     private fun setMovieDetails(movie: Movie){
-        Glide.with(this).load(Uri.parse(movie.backdrop)).into(backGround)
+        Glide.with(this).load(Uri.parse(    BuildConfig.BASE_URL
+             + movie.backdrop)).into(backGround)
         movieName.text = movie.title
         genre.text = movie.genres.toString().removePrefix("[").removeSuffix("]")
         reviews.text = getString(R.string.reviews)

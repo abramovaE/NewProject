@@ -3,9 +3,8 @@ package com.abramovae.newproject.viewModel
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
-import com.abramovae.newproject.repo.IMoviesRepo
+import com.abramovae.newproject.repo.LoadMovieInterceptor
 import com.abramovae.newproject.repo.LoadMoviesInt
-import com.abramovae.newproject.repo.MoviesRepo
 import com.android.academy.fundamentals.homework.features.data.Actor
 import com.android.academy.fundamentals.homework.features.data.Genre
 import com.android.academy.fundamentals.homework.features.data.Movie
@@ -22,7 +21,7 @@ import retrofit2.create
 import java.lang.IllegalArgumentException
 import java.util.concurrent.TimeUnit
 
-class MoviesVM(private val repo: IMoviesRepo): ViewModel() {
+class MoviesVM(): ViewModel() {
 
 
     private val _selectedMovie = MutableLiveData<Movie>()
@@ -44,6 +43,14 @@ class MoviesVM(private val repo: IMoviesRepo): ViewModel() {
         }
     }
 
+//    fun getConfig(){
+//        viewModelScope.launch {
+//            withContext(Dispatchers.IO) {
+//                RetrofitModule.loadMoviesApi.getConfiguration().baseUrl
+//            }
+//        }
+//    }
+
     fun load() {
 //        lateinit var data: List<Movie>
 //        viewModelScope.launch{
@@ -53,9 +60,9 @@ class MoviesVM(private val repo: IMoviesRepo): ViewModel() {
 //            _movies.value = data
 //        }
 
+
+
         lateinit var movies: List<Movie>
-        lateinit var actors: List<Actor>
-        actors = ArrayList<Actor>()
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -103,15 +110,15 @@ class MoviesVM(private val repo: IMoviesRepo): ViewModel() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             when (modelClass) {
-                MoviesVM::class.java -> MoviesVM(MoviesRepo(appContext)) as T
+                MoviesVM::class.java -> MoviesVM() as T
                 else -> throw IllegalArgumentException()
             }
-            return MoviesVM(MoviesRepo(appContext)) as T
+            return MoviesVM() as T
         }
     }
 
 
-    private object RetrofitModule {
+    public object RetrofitModule {
         private val json = Json {
             ignoreUnknownKeys = true
             isLenient = true
@@ -121,6 +128,7 @@ class MoviesVM(private val repo: IMoviesRepo): ViewModel() {
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(LoadMovieInterceptor())
             .build()
 
         @Suppress("EXPERIMENTAL_API_USAGE")

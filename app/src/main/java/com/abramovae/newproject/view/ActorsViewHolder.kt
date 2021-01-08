@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.abramovae.newproject.R
+import com.abramovae.newproject.repo.BuildConfig
 import com.android.academy.fundamentals.homework.features.data.Actor
 import com.bumptech.glide.Glide
 
@@ -16,6 +17,6 @@ class ActorsViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
     fun bind(actor: Actor){
         name.setText(actor.name)
-        Glide.with(itemView.context).load(Uri.parse(actor.picture)).into(img)
+        Glide.with(itemView.context).load(Uri.parse(BuildConfig.BASE_URL + actor.picture)).into(img)
     }
 }

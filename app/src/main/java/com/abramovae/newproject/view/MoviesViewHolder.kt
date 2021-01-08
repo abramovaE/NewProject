@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.abramovae.newproject.R
+import com.abramovae.newproject.repo.BuildConfig
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.bumptech.glide.Glide
 
@@ -31,7 +32,9 @@ class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view){
     fun bind(movie: Movie){
         this.movie = movie
         title.setText(movie.title)
-        Glide.with(itemView.context).load(Uri.parse(movie.poster)).into(picture)
+        Glide.with(itemView.context).load(Uri.parse(
+            BuildConfig.BASE_URL
+            + movie.poster)).into(picture)
         dur.text = itemView.context.getString(R.string.min, movie.runtime)
         reviews.setText(itemView.context.getString(R.string.reviews))
         if(movie.adult){
