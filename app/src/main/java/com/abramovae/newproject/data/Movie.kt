@@ -33,10 +33,10 @@ data class Movie(
     val adult: Boolean,
 
         @SerialName("vote_count")
-    val runtime: Int,
+        val runtime: Int,
 
         @SerialName("genre_ids")
-    val genreIds: List<Int>,
+        val genreIds: List<Int>,
 
         var genres: List<Genre> = ArrayList<Genre>(),
 
@@ -96,7 +96,6 @@ data class Movie(
             return arrayOfNulls(size)
         }
     }
-
 
 
 }

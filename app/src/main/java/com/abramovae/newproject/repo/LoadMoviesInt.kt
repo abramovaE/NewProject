@@ -1,16 +1,10 @@
 package com.abramovae.newproject.repo
 
 import com.abramovae.newproject.data.*
-import com.android.academy.fundamentals.homework.features.data.Actor
-import com.android.academy.fundamentals.homework.features.data.Genre
-import com.android.academy.fundamentals.homework.features.data.Movie
-import com.android.academy.fundamentals.homework.features.data.MovieTest
-import retrofit2.Call
-import retrofit2.Response
+
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.QueryMap
-import java.net.URL
+
 
 interface LoadMoviesInt {
 

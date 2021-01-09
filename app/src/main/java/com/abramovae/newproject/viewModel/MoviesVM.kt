@@ -3,16 +3,14 @@ package com.abramovae.newproject.viewModel
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
+import com.abramovae.newproject.data.RetrofitModule
 import com.abramovae.newproject.repo.LoadMovieInterceptor
 import com.abramovae.newproject.repo.LoadMoviesInt
 import com.android.academy.fundamentals.homework.features.data.Actor
 import com.android.academy.fundamentals.homework.features.data.Genre
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -21,7 +19,11 @@ import retrofit2.create
 import java.lang.IllegalArgumentException
 import java.util.concurrent.TimeUnit
 
-class MoviesVM(): ViewModel() {
+class MoviesVM(val loadMoviesApi: LoadMoviesInt): ViewModel() {
+
+    val handler = CoroutineExceptionHandler { _, exception ->
+        println("CoroutineExceptionHandler got $exception")
+    }
 
 
     private val _selectedMovie = MutableLiveData<Movie>()
@@ -43,31 +45,12 @@ class MoviesVM(): ViewModel() {
         }
     }
 
-//    fun getConfig(){
-//        viewModelScope.launch {
-//            withContext(Dispatchers.IO) {
-//                RetrofitModule.loadMoviesApi.getConfiguration().baseUrl
-//            }
-//        }
-//    }
-
     fun load() {
-//        lateinit var data: List<Movie>
-//        viewModelScope.launch{
-//            withContext(Dispatchers.IO) {
-//                data = repo.getMovies()
-//            }
-//            _movies.value = data
-//        }
-
-
-
         lateinit var movies: List<Movie>
-
-        viewModelScope.launch {
+        viewModelScope.launch(handler) {
             withContext(Dispatchers.IO) {
-                genresList = RetrofitModule.loadMoviesApi.loadGenres().genres
-                movies = RetrofitModule.loadMoviesApi.getMovies().movies.map {
+                genresList = loadMoviesApi.loadGenres().genres
+                movies = loadMoviesApi.getMovies().movies.map {
                     Movie(
                         it.id,
                         it.title,
@@ -94,8 +77,7 @@ class MoviesVM(): ViewModel() {
     }
 
     suspend fun getActors(movieId: Int): List<Actor>{
-
-        return RetrofitModule.loadMoviesApi.loadMovieActors(movieId).actors
+        return loadMoviesApi.loadMovieActors(movieId).actors
     }
 
 
@@ -110,35 +92,14 @@ class MoviesVM(): ViewModel() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             when (modelClass) {
-                MoviesVM::class.java -> MoviesVM() as T
+                MoviesVM::class.java -> MoviesVM(RetrofitModule.RetrofitModule.loadMoviesApi) as T
                 else -> throw IllegalArgumentException()
             }
-            return MoviesVM() as T
+            return MoviesVM(RetrofitModule.RetrofitModule.loadMoviesApi) as T
         }
     }
 
 
-    public object RetrofitModule {
-        private val json = Json {
-            ignoreUnknownKeys = true
-            isLenient = true
 
-        }
-        val httpClient = OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .addInterceptor(LoadMovieInterceptor())
-            .build()
-
-        @Suppress("EXPERIMENTAL_API_USAGE")
-        private val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org")
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .client(httpClient)
-            .build()
-
-        val loadMoviesApi: LoadMoviesInt = retrofit.create()
-    }
 
 }
