@@ -1,6 +1,5 @@
 package com.abramovae.newproject.repo
 
-import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -20,10 +19,6 @@ class LoadMovieInterceptor: Interceptor {
 
             val request = original.newBuilder()
                 .url(originalHttpUrl)
-
-//                .addHeader(API_KEY_HEADER, API_KEY)
-//                .addHeader("language", LANGUAGE)
-
                 .build()
 
             return chain.proceed(request)

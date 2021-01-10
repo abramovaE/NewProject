@@ -2,6 +2,7 @@ package com.abramovae.newproject.viewModel
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.abramovae.newproject.data.RetrofitModule
 import com.abramovae.newproject.repo.LoadMovieInterceptor
@@ -19,11 +20,15 @@ import retrofit2.create
 import java.lang.IllegalArgumentException
 import java.util.concurrent.TimeUnit
 
-class MoviesVM(val loadMoviesApi: LoadMoviesInt): ViewModel() {
+class MoviesVM(private val loadMoviesApi: LoadMoviesInt): ViewModel() {
 
-    val handler = CoroutineExceptionHandler { _, exception ->
+    private val handler = CoroutineExceptionHandler { _, exception ->
         println("CoroutineExceptionHandler got $exception")
+        _exText.value = "the loading was failed"
     }
+
+    private val _exText = MutableLiveData<String>()
+    val exText get() = _exText
 
 
     private val _selectedMovie = MutableLiveData<Movie>()
@@ -92,10 +97,10 @@ class MoviesVM(val loadMoviesApi: LoadMoviesInt): ViewModel() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             when (modelClass) {
-                MoviesVM::class.java -> MoviesVM(RetrofitModule.RetrofitModule.loadMoviesApi) as T
+                MoviesVM::class.java -> MoviesVM(RetrofitModule.loadMoviesApi) as T
                 else -> throw IllegalArgumentException()
             }
-            return MoviesVM(RetrofitModule.RetrofitModule.loadMoviesApi) as T
+            return MoviesVM(RetrofitModule.loadMoviesApi) as T
         }
     }
 

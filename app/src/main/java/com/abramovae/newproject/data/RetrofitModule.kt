@@ -10,11 +10,13 @@ import retrofit2.Retrofit
 import retrofit2.create
 import java.util.concurrent.TimeUnit
 
-class RetrofitModule {
 
 
 
     public object RetrofitModule {
+
+        public const val BASE_URL = "https://image.tmdb.org/t/p/w500"
+
         private val json = Json {
             ignoreUnknownKeys = true
             isLenient = true
@@ -36,4 +38,3 @@ class RetrofitModule {
 
         val loadMoviesApi: LoadMoviesInt = retrofit.create()
     }
-}

@@ -5,8 +5,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.abramovae.newproject.BuildConfig
 import com.abramovae.newproject.R
-import com.abramovae.newproject.repo.BuildConfig
+import com.abramovae.newproject.data.RetrofitModule
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.bumptech.glide.Glide
 
@@ -33,7 +34,7 @@ class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view){
         this.movie = movie
         title.setText(movie.title)
         Glide.with(itemView.context).load(Uri.parse(
-            BuildConfig.BASE_URL
+            RetrofitModule.BASE_URL
             + movie.poster)).into(picture)
         dur.text = itemView.context.getString(R.string.min, movie.runtime)
         reviews.setText(itemView.context.getString(R.string.reviews))

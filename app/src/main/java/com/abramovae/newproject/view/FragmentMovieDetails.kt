@@ -7,17 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.abramovae.newproject.BuildConfig
 import com.abramovae.newproject.MainActivity
 import com.abramovae.newproject.R
-import com.abramovae.newproject.repo.BuildConfig
+import com.abramovae.newproject.data.RetrofitModule
 import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.bumptech.glide.Glide
+import android.widget.Toast.makeText as toastMakeText
 import kotlin.collections.listOf as listOf1
 
 class FragmentMovieDetails: Fragment(), View.OnClickListener{
@@ -48,6 +51,7 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
 
         viewModel = ViewModelProvider((activity as MainActivity), MoviesVM.Factory(activity as MainActivity)).get(MoviesVM::class.java)
         viewModel.selectedMovie.observe(this.viewLifecycleOwner, this::setMovieDetails)
+        viewModel.exText.observe(this.viewLifecycleOwner, this::showErrorToast)
 
 
 
@@ -91,7 +95,7 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
     }
 
     private fun setMovieDetails(movie: Movie){
-        Glide.with(this).load(Uri.parse(    BuildConfig.BASE_URL
+        Glide.with(this).load(Uri.parse(     RetrofitModule.BASE_URL
              + movie.backdrop)).into(backGround)
         movieName.text = movie.title
         genre.text = movie.genres.toString().removePrefix("[").removeSuffix("]")
@@ -112,5 +116,10 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
             }
         }
         list.adapter = ActorsAdapter(movie)
+    }
+
+    public fun showErrorToast(ext: String) {
+       Toast.makeText(activity, ext, Toast.LENGTH_SHORT).show()
+
     }
 }
