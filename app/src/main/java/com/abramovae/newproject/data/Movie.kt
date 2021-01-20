@@ -2,53 +2,64 @@ package com.android.academy.fundamentals.homework.features.data
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.versionedparcelable.NonParcelField
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import kotlin.math.roundToInt
 
-@Serializable
+@Entity(tableName = "movie")
 data class Movie(
 
+    @PrimaryKey
+    @ColumnInfo(name = "uid")
+    @SerialName("id")
+    val id: Int? = null,
 
-        @SerialName("id")
-    val id: Int,
-
-        @SerialName("title")
+    @ColumnInfo(name = "title")
+    @SerialName("title")
     val title: String?,
 
-        @SerialName("overview")
+    @ColumnInfo(name = "overview")
+    @SerialName("overview")
     val overview: String?,
 
-        @SerialName("poster_path")
+    @ColumnInfo(name = "poster_path")
+    @SerialName("poster_path")
     val poster: String?,
 
-        @SerialName("backdrop_path")
+    @ColumnInfo(name = "backdrop_path")
+    @SerialName("backdrop_path")
     val backdrop: String?,
 
-        @SerialName("vote_average")
+    @ColumnInfo(name = "vote_average")
+    @SerialName("vote_average")
     val ratings: Float,
 
-        @SerialName("adult")
+    @ColumnInfo(name = "adult")
+    @SerialName("adult")
     val adult: Boolean,
 
-        @SerialName("vote_count")
-        val runtime: Int,
+    @ColumnInfo(name = "vote_count")
+    @SerialName("vote_count")
+    val runtime: Int,
 
-        @SerialName("genre_ids")
-        val genreIds: List<Int>,
+    @SerialName("genre_ids")
+    val genreIds: List<Int>,
 
-        var genres: List<Genre> = ArrayList<Genre>(),
+    @Ignore
+    var genres: List<Genre> = ArrayList<Genre>(),
 
-        var actors: List<Actor> = ArrayList<Actor>()
-): Parcelable{
+    @Ignore
+    var actors: List<Actor> = ArrayList<Actor>()
+)
+    : Parcelable{
 
-
+    public constructor(): this(0, null, null, null,
+        null, 0.0f, false, 0, emptyList(), emptyList(), emptyList())
 
     constructor(parcel: Parcel) : this(
-
-
-
         parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
@@ -57,20 +68,18 @@ data class Movie(
         parcel.readFloat(),
         parcel.readByte() != 0.toByte(),
         parcel.readInt(),
-            parcel.createIntArray()!!.toList(),
-
+        parcel.createIntArray()!!.toList(),
         parcel.createTypedArrayList(Genre)!!,
         parcel.createTypedArrayList(Actor)!!
     ) {
     }
-
 
     fun getRating(): Int{
         return ((ratings/2.0).roundToInt());
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
+        parcel.writeValue(id)
         parcel.writeString(title)
         parcel.writeString(overview)
         parcel.writeString(poster)
@@ -78,7 +87,6 @@ data class Movie(
         parcel.writeFloat(ratings)
         parcel.writeByte(if (adult) 1 else 0)
         parcel.writeInt(runtime)
-        parcel.writeIntArray(genreIds.toIntArray())
         parcel.writeTypedList(genres)
         parcel.writeTypedList(actors)
     }
@@ -96,6 +104,4 @@ data class Movie(
             return arrayOfNulls(size)
         }
     }
-
-
 }

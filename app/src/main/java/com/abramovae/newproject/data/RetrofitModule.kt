@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit
 
 
 
-    public object RetrofitModule {
+    object RetrofitModule {
 
-        public const val BASE_URL = "https://image.tmdb.org/t/p/w500"
+        const val BASE_URL = "https://image.tmdb.org/t/p/w500"
 
         private val json = Json {
             ignoreUnknownKeys = true
