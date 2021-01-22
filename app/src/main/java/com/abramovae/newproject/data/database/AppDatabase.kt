@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [ActorDB::class, GenreDB::class, MovieDB::class], version = 1)
+@Database(entities = [ActorDB::class, GenreDB::class, MovieDB::class], version = 2)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun movieDao(): MovieDao

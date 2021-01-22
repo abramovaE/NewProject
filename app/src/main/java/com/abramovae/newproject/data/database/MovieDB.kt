@@ -10,31 +10,31 @@ class MovieDB (
 
     @PrimaryKey
     @ColumnInfo(name = "uid")
-    val uid: Int,
+    var uid: Int? = null,
 
     @ColumnInfo(name = "title")
-    val title: String?,
+    var title: String?,
 
     @ColumnInfo(name = "overview")
-    val overview: String?,
+    var overview: String?,
 
     @ColumnInfo(name = "poster_path")
-    val poster: String?,
+    var poster: String?,
 
     @ColumnInfo(name = "backdrop_path")
-    val backdrop: String?,
+    var backdrop: String?,
 
     @ColumnInfo(name = "vote_average")
-    val ratings: Float,
+    var ratings: Float,
 
     @ColumnInfo(name = "adult")
-    val adult: Boolean,
+    var adult: Boolean,
 
     @ColumnInfo(name = "vote_count")
-    val runtime: Int,
+    var runtime: Int,
 
     @ColumnInfo(name = "genre_ids")
-    val genreIds: List<Int>
+    var genreIds: List<Int>
 
 ){
 

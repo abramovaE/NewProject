@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.*
 import com.abramovae.newproject.data.RetrofitModule
+import com.abramovae.newproject.data.database.Repository
 import com.abramovae.newproject.repo.LoadMovieInterceptor
 import com.abramovae.newproject.repo.LoadMoviesInt
 import com.android.academy.fundamentals.homework.features.data.Actor
@@ -20,7 +21,8 @@ import retrofit2.create
 import java.lang.IllegalArgumentException
 import java.util.concurrent.TimeUnit
 
-class MoviesVM(private val loadMoviesApi: LoadMoviesInt): ViewModel() {
+class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repository): ViewModel() {
+
 
     private val handler = CoroutineExceptionHandler { _, exception ->
         println("CoroutineExceptionHandler got $exception")
@@ -46,6 +48,8 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt): ViewModel() {
 
     fun select(movie: Movie) {
         viewModelScope.launch {
+
+            movie.actors = getActors(movie.id)
             _selectedMovie.value = movie
         }
     }
@@ -53,6 +57,11 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt): ViewModel() {
     fun load() {
         lateinit var movies: List<Movie>
         viewModelScope.launch(handler) {
+//            withContext(Dispatchers.IO){
+//                movies = repo.getAllMovies()
+//            }
+
+
             withContext(Dispatchers.IO) {
                 genresList = loadMoviesApi.loadGenres().genres
                 movies = loadMoviesApi.getMovies().movies.map {
@@ -68,7 +77,8 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt): ViewModel() {
                         it.genreIds,
 
                         getGenres(it.genreIds),
-                        getActors(it.id)
+                        kotlin.collections.emptyList<com.android.academy.fundamentals.homework.features.data.Actor>()
+//                        getActors(it.id)
 
                     )
                 }
@@ -94,17 +104,14 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt): ViewModel() {
     class Factory(context: Context) :
         ViewModelProvider.NewInstanceFactory() {
         private val appContext = context.applicationContext
+        private val repo = Repository(context.applicationContext)
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             when (modelClass) {
-                MoviesVM::class.java -> MoviesVM(RetrofitModule.loadMoviesApi) as T
+                MoviesVM::class.java -> MoviesVM(RetrofitModule.loadMoviesApi, repo) as T
                 else -> throw IllegalArgumentException()
             }
-            return MoviesVM(RetrofitModule.loadMoviesApi) as T
+            return MoviesVM(RetrofitModule.loadMoviesApi, repo) as T
         }
     }
-
-
-
-
 }

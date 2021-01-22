@@ -9,12 +9,12 @@ import kotlinx.serialization.SerialName
 class ActorDB(
     @PrimaryKey
     @ColumnInfo(name= "uid")
-    val uid: Int,
+    var uid: Int? = null,
 
     @ColumnInfo(name= "name")
-    val name: String?,
+    var name: String?,
 
     @ColumnInfo(name= "profile_path")
-    val picture: String?
+    var picture: String?
 ) {
 }
