@@ -10,6 +10,6 @@ interface MovieDao {
     @Query("SELECT * FROM moviedb")
     fun getAllMovies() : List<MovieDB>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveAllMovies(genres: List<MovieDB>)
 }

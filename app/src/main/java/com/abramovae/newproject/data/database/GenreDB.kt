@@ -10,7 +10,7 @@ class GenreDB(
 
     @PrimaryKey
     @ColumnInfo(name = "uid")
-    var uid: Int? = null,
+    var uid: Int,
 
     @ColumnInfo(name= "name")
     var name: String?

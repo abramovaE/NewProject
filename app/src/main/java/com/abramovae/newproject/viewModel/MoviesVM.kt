@@ -5,6 +5,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.*
 import com.abramovae.newproject.data.RetrofitModule
+import com.abramovae.newproject.data.database.ActorDB
+import com.abramovae.newproject.data.database.GenreDB
+import com.abramovae.newproject.data.database.MovieDB
 import com.abramovae.newproject.data.database.Repository
 import com.abramovae.newproject.repo.LoadMovieInterceptor
 import com.abramovae.newproject.repo.LoadMoviesInt
@@ -49,7 +52,14 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
     fun select(movie: Movie) {
         viewModelScope.launch {
 
-            movie.actors = getActors(movie.id)
+            var actorsDb: List<ActorDB> = repo.getActors(movie.id)
+            movie.actors = convertActors(actorsDb)
+            _selectedMovie.value = movie
+
+
+            var actors = getActors(movie.id)
+            movie.actors = actors
+            repo.saveActors(convertActors(actors, movie.id))
             _selectedMovie.value = movie
         }
     }
@@ -57,9 +67,25 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
     fun load() {
         lateinit var movies: List<Movie>
         viewModelScope.launch(handler) {
-//            withContext(Dispatchers.IO){
-//                movies = repo.getAllMovies()
-//            }
+            withContext(Dispatchers.IO){
+                var movDb: List<MovieDB> = repo.getAllMovies()
+                var genDB: List<GenreDB> = repo.getAllGenres()
+                movies = movDb.map {
+                    Movie(it.uid,
+                    it.title,
+                    it.overview,
+                    it.poster,
+                    it.backdrop,
+                    it.ratings,
+                    it.adult,
+                    it.runtime,
+                    it.genreIds,
+                    getGenres(it.genreIds, conversGenres(genDB)),
+                    kotlin.collections.emptyList<com.android.academy.fundamentals.homework.features.data.Actor>())
+                        }
+
+            }
+            _movies.value = movies
 
 
             withContext(Dispatchers.IO) {
@@ -75,20 +101,86 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
                         it.adult,
                         it.runtime,
                         it.genreIds,
-
                         getGenres(it.genreIds),
                         kotlin.collections.emptyList<com.android.academy.fundamentals.homework.features.data.Actor>()
 //                        getActors(it.id)
-
                     )
                 }
             }
+
+            var moviesdb: List<MovieDB> = convertMovies(movies)
+            var genresDb: List<GenreDB> = convertGenres(genresList)
+            repo.saveAllMovies(moviesdb)
+            repo.saveAllGenres(genresDb)
             _movies.value = movies
         }
     }
 
     fun getGenres(genreIds: List<Int>): List<Genre>{
         return genresList.filter { genreIds.contains(it.id) }
+    }
+
+    fun getGenres(genreIds: List<Int>, genres: List<Genre>): List<Genre>{
+        return genres.filter { genreIds.contains(it.id) }
+    }
+
+    fun conversGenres(genresDb: List<GenreDB>): List<Genre>{
+        return genresDb.map {
+            Genre(
+                it.uid, it.name
+            )
+        }
+    }
+
+    fun convertGenres(genres: List<Genre>): List<GenreDB>{
+        return genres.map {
+            GenreDB(
+                it.id, it.name
+            )
+        }
+    }
+
+    fun convertMovies(movies: List<Movie>) : List<MovieDB>{
+        return movies.map {
+            MovieDB(
+                it.id,
+                it.title,
+                it.overview,
+                it.poster,
+                it.backdrop,
+                it.ratings,
+                it.adult,
+                it.runtime,
+                it.genreIds,
+            )
+        }
+    }
+
+    fun convertActors(actorsDb: List<ActorDB>) : List<Actor>{
+        return actorsDb.map {
+            Actor(
+                it.uid, it.name, it.picture
+            )
+        }
+    }
+
+    suspend fun convertActors(actors: List<Actor>, movieId: Int) : List<ActorDB>{
+        return actors.map {
+
+            var moviesIds = ArrayList<Int>(1)
+            var actor = repo.getActor(it.id)
+            if(actor != null){
+                moviesIds = repo.getActor(it.id).moviesIds as ArrayList<Int>
+                if(moviesIds == null){
+                    moviesIds = ArrayList<Int>(1)
+                }
+            }
+
+            moviesIds.add(movieId)
+            ActorDB(
+                it.id, it.name, it.picture,  moviesIds
+            )
+        }
     }
 
     suspend fun getActors(movieId: Int): List<Actor>{

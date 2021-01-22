@@ -11,6 +11,9 @@ interface GenreDao {
     @Query("SELECT * FROM genredb")
     fun getAllGenres() : List<GenreDB>
 
-    @Insert
+    @Query("SELECT * FROM genredb WHERE uid IN  (:genresId)")
+    fun getGenres(genresId: List<Int>) : List<GenreDB>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveAllGenres(genres: List<GenreDB>)
 }

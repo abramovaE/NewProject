@@ -10,7 +10,7 @@ class MovieDB (
 
     @PrimaryKey
     @ColumnInfo(name = "uid")
-    var uid: Int? = null,
+    var uid: Int,
 
     @ColumnInfo(name = "title")
     var title: String?,
