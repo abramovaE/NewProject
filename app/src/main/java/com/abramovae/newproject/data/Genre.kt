@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Genre(
+
     @SerialName("id")
     val id: Int,
 
