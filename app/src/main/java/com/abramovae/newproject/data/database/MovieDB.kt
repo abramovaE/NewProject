@@ -35,6 +35,7 @@ class MovieDB (
 
     @ColumnInfo(name = "genre_ids")
     val genreIds: List<Int>
+
 ){
 
 }
