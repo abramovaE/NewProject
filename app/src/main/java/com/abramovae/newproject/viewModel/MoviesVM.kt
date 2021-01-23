@@ -50,7 +50,7 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
     lateinit var genresList: List<Genre>
 
     fun select(movie: Movie) {
-        viewModelScope.launch {
+        viewModelScope.launch(handler) {
 
             var actorsDb: List<ActorDB> = repo.getActors(movie.id)
             movie.actors = convertActors(actorsDb)

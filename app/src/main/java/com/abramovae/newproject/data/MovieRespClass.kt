@@ -6,19 +6,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MovieRespClass(
+        @SerialName("page")
+        val page: Int,
 
-
-    @SerialName("page")
-    val page: Int,
-
-    @SerialName("results")
-    val movies: List<Movie>
-
-
-    )
-
-
-
-{
-
-}
+        @SerialName("results")
+        val movies: List<Movie>
+    ) {}
