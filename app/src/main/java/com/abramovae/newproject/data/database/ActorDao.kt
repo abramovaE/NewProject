@@ -12,9 +12,9 @@ interface ActorDao {
     fun getActor(actorId: Int) : ActorDB
 
 
-    @Query("SELECT * FROM actordb WHERE :movieId IN (movies_ids)")
-    fun getActors(movieId: Int) : List<ActorDB>
+    @Query("SELECT * FROM actordb WHERE movies_ids LIKE :movieId")
+    fun getActors(movieId: String) : List<ActorDB>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveActors(genres: List<ActorDB>)
+    fun saveActors(actors: List<ActorDB>)
 }

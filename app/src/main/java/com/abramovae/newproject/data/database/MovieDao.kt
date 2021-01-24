@@ -11,5 +11,5 @@ interface MovieDao {
     fun getAllMovies() : List<MovieDB>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveAllMovies(genres: List<MovieDB>)
+    fun saveAllMovies(movies: List<MovieDB>)
 }

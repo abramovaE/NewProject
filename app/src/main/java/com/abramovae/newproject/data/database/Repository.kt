@@ -26,7 +26,7 @@ class Repository(applicationContext: Context)
     }
 
     suspend fun getActors(movieId: Int): List<ActorDB> = withContext(Dispatchers.IO){
-        db.actorDao().getActors(movieId)
+        db.actorDao().getActors("%" + movieId + "%")
     }
 
     suspend fun getActor(actorId: Int): ActorDB = withContext(Dispatchers.IO){

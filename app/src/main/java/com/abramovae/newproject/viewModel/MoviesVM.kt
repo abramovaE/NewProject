@@ -59,7 +59,8 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
 
             var actors = getActors(movie.id)
             movie.actors = actors
-            repo.saveActors(convertActors(actors, movie.id))
+            var convertedActors = convertActors(actors, movie.id)
+            repo.saveActors(convertedActors)
             _selectedMovie.value = movie
         }
     }
@@ -165,8 +166,8 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
     }
 
     suspend fun convertActors(actors: List<Actor>, movieId: Int) : List<ActorDB>{
-        return actors.map {
 
+        return actors.map {
             var moviesIds = ArrayList<Int>(1)
             var actor = repo.getActor(it.id)
             if(actor != null){
@@ -175,8 +176,9 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
                     moviesIds = ArrayList<Int>(1)
                 }
             }
-
-            moviesIds.add(movieId)
+            if(!moviesIds.contains(movieId)) {
+                moviesIds.add(movieId)
+            }
             ActorDB(
                 it.id, it.name, it.picture,  moviesIds
             )
