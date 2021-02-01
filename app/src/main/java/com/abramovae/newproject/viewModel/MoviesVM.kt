@@ -30,6 +30,9 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
     private val handler = CoroutineExceptionHandler { _, exception ->
         println("CoroutineExceptionHandler got $exception")
         _exText.value = "the loading was failed"
+
+
+
     }
 
     private val _exText = MutableLiveData<String>()
