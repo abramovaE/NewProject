@@ -25,27 +25,19 @@ import java.lang.IllegalArgumentException
 import java.util.concurrent.TimeUnit
 
 class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repository): ViewModel() {
-
-
     private val handler = CoroutineExceptionHandler { _, exception ->
         println("CoroutineExceptionHandler got $exception")
         _exText.value = "the loading was failed"
-
-
-
     }
 
     private val _exText = MutableLiveData<String>()
     val exText get() = _exText
 
-
     private val _selectedMovie = MutableLiveData<Movie>()
     val selectedMovie get() = _selectedMovie
 
-
     private val _movies = MutableLiveData<List<Movie>>()
     val movies get() = _movies
-
 
     private val _genres = MutableLiveData<List<Genre>>()
     val genres get() = _genres
@@ -86,11 +78,9 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
                     it.genreIds,
                     getGenres(it.genreIds, conversGenres(genDB)),
                     kotlin.collections.emptyList<com.android.academy.fundamentals.homework.features.data.Actor>())
-                        }
-
+                }
             }
             _movies.value = movies
-
 
             withContext(Dispatchers.IO) {
                 genresList = loadMoviesApi.loadGenres().genres

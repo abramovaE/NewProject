@@ -7,6 +7,9 @@ import kotlinx.coroutines.withContext
 class Repository(applicationContext: Context)
 {
 
+
+
+
     private val db = AppDatabase.create(applicationContext)
 
     suspend fun getAllGenres(): List<GenreDB> = withContext(Dispatchers.IO) {
