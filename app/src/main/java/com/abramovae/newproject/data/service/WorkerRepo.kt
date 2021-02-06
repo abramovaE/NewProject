@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 class WorkerRepo {
 
     val constr = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiredNetworkType(NetworkType.UNMETERED)
         .setRequiresCharging(true)
         .build()
 
