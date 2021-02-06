@@ -2,19 +2,27 @@ package com.android.academy.fundamentals.homework.features.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@Entity(tableName = "actor")
 data class Actor(
 
     @SerialName("id")
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid")
     val id: Int,
 
     @SerialName("name")
+    @ColumnInfo(name = "name")
     val name: String?,
 
     @SerialName("profile_path")
+    @ColumnInfo(name = "profile_path")
     val picture: String?
 
 ): Parcelable{
