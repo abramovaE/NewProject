@@ -26,6 +26,7 @@ class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view){
     private val star2: ImageView = itemView.findViewById(R.id.star_icon3)
     private val star3: ImageView = itemView.findViewById(R.id.star_icon4)
     private val star4: ImageView = itemView.findViewById(R.id.star_icon5)
+    val BASE_URL = "https://image.tmdb.org/t/p/w500"
 
     var movie: Movie? = null
 
@@ -34,7 +35,7 @@ class MoviesViewHolder(view: View): RecyclerView.ViewHolder(view){
         this.movie = movie
         title.setText(movie.title)
         Glide.with(itemView.context).load(Uri.parse(
-            RetrofitModule.BASE_URL
+            BASE_URL
             + movie.poster)).into(picture)
         dur.text = itemView.context.getString(R.string.min, movie.runtime)
         reviews.setText(itemView.context.getString(R.string.reviews))

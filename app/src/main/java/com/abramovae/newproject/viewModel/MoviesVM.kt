@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.abramovae.newproject.data.RetrofitModule
+
 import com.abramovae.newproject.repo.LoadMoviesInt
 import com.abramovae.newproject.repo.Repository
 import com.android.academy.fundamentals.homework.features.data.Actor
@@ -11,6 +12,7 @@ import com.android.academy.fundamentals.homework.features.data.Genre
 import com.android.academy.fundamentals.homework.features.data.Movie
 import kotlinx.coroutines.*
 import java.lang.IllegalArgumentException
+
 
 class MoviesVM(private val loadMoviesApi: LoadMoviesInt,  private val repository: Repository): ViewModel() {
 
@@ -37,7 +39,17 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt,  private val repository
     lateinit var genresList: List<Genre>
 
     fun select(movie: Movie) {
-        viewModelScope.launch {
+        viewModelScope.launch(handler) {
+
+            var actorsDb: List<ActorDB> = repo.getActors(movie.id)
+            movie.actors = convertActors(actorsDb)
+            _selectedMovie.value = movie
+
+
+            var actors = getActors(movie.id)
+            movie.actors = actors
+            var convertedActors = convertActors(actors, movie.id)
+            repo.saveActors(convertedActors)
             _selectedMovie.value = movie
         }
     }
@@ -46,33 +58,27 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt,  private val repository
         lateinit var movies: List<Movie>
         viewModelScope.launch(handler) {
             withContext(Dispatchers.IO){
-                genresList = repository.getAllGenres()
-                movies = repository.getAllMovies()
-                _movies.value = movies
-            }
-
-
-
-            withContext(Dispatchers.IO) {
-                genresList = loadMoviesApi.loadGenres().genres
+               genresList = loadMoviesApi.loadGenres().genres
                 movies = loadMoviesApi.getMovies().movies.map {
                     Movie(
-                        it.id,
-                        it.title,
-                        it.overview,
-                        it.poster,
-                        it.backdrop,
-                        it.ratings,
-                        it.adult,
-                        it.runtime,
-                        it.genreIds,
-
+                        it.uid,
+                    it.title,
+                    it.overview,
+                    it.poster,
+                    it.backdrop,
+                    it.ratings,
+                    it.adult,
+                    it.runtime,
+                    it.genreIds,
                         getGenres(it.genreIds),
-                        getActors(it.id!!)
-
+                        kotlin.collections.emptyList<com.android.academy.fundamentals.homework.features.data.Actor>()
                     )
                 }
             }
+            var moviesdb: List<MovieDB> = convertMovies(movies)
+            var genresDb: List<GenreDB> = convertGenres(genresList)
+            repo.saveAllMovies(moviesdb)
+            repo.saveAllGenres(genresDb)
             _movies.value = movies
 
         }
@@ -80,6 +86,70 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt,  private val repository
 
     fun getGenres(genreIds: List<Int>): List<Genre>{
         return genresList.filter { genreIds.contains(it.id) }
+    }
+
+    fun getGenres(genreIds: List<Int>, genres: List<Genre>): List<Genre>{
+        return genres.filter { genreIds.contains(it.id) }
+    }
+
+    fun conversGenres(genresDb: List<GenreDB>): List<Genre>{
+        return genresDb.map {
+            Genre(
+                it.uid, it.name
+            )
+        }
+    }
+
+    fun convertGenres(genres: List<Genre>): List<GenreDB>{
+        return genres.map {
+            GenreDB(
+                it.id, it.name
+            )
+        }
+    }
+
+    fun convertMovies(movies: List<Movie>) : List<MovieDB>{
+        return movies.map {
+            MovieDB(
+                it.id,
+                it.title,
+                it.overview,
+                it.poster,
+                it.backdrop,
+                it.ratings,
+                it.adult,
+                it.runtime,
+                it.genreIds,
+            )
+        }
+    }
+
+    fun convertActors(actorsDb: List<ActorDB>) : List<Actor>{
+        return actorsDb.map {
+            Actor(
+                it.uid, it.name, it.picture
+            )
+        }
+    }
+
+    suspend fun convertActors(actors: List<Actor>, movieId: Int) : List<ActorDB>{
+
+        return actors.map {
+            var moviesIds = ArrayList<Int>(1)
+            var actor = repo.getActor(it.id)
+            if(actor != null){
+                moviesIds = repo.getActor(it.id).moviesIds as ArrayList<Int>
+                if(moviesIds == null){
+                    moviesIds = ArrayList<Int>(1)
+                }
+            }
+            if(!moviesIds.contains(movieId)) {
+                moviesIds.add(movieId)
+            }
+            ActorDB(
+                it.id, it.name, it.picture,  moviesIds
+            )
+        }
     }
 
     suspend fun getActors(movieId: Int): List<Actor>{
@@ -95,22 +165,14 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt,  private val repository
     class Factory(context: Context) :
         ViewModelProvider.NewInstanceFactory() {
         private val appContext = context.applicationContext
+        private val repo = Repository(context.applicationContext)
 
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-
-
+           override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             when (modelClass) {
-                MoviesVM::class.java -> MoviesVM(RetrofitModule.loadMoviesApi, Repository(appContext)
-                ) as T
+                MoviesVM::class.java -> MoviesVM(RetrofitModule.loadMoviesApi, repo) as T
                 else -> throw IllegalArgumentException()
             }
-            return MoviesVM(RetrofitModule.loadMoviesApi, Repository(appContext)) as T
+            return MoviesVM(RetrofitModule.loadMoviesApi, repo) as T
         }
-    }
-
-
-
-
-
-
+      }
 }

@@ -13,19 +13,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abramovae.newproject.BuildConfig
 import com.abramovae.newproject.MainActivity
 import com.abramovae.newproject.R
 import com.abramovae.newproject.data.RetrofitModule
 import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.bumptech.glide.Glide
-import android.widget.Toast.makeText as toastMakeText
 import kotlin.collections.listOf as listOf1
 
 class FragmentMovieDetails: Fragment(), View.OnClickListener{
-
-
     private lateinit var viewModel: MoviesVM
     private lateinit var backGround: ImageView
     private lateinit var movieName: TextView
@@ -36,6 +32,7 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
     private lateinit var overView: TextView
     private lateinit var stars: List<ImageView>
     private lateinit var list: RecyclerView
+    val BASE_URL = "https://image.tmdb.org/t/p/w500"
 
     companion object {
         fun newInstance(): FragmentMovieDetails {
@@ -48,13 +45,9 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         viewModel = ViewModelProvider((activity as MainActivity), MoviesVM.Factory(activity as MainActivity)).get(MoviesVM::class.java)
         viewModel.selectedMovie.observe(this.viewLifecycleOwner, this::setMovieDetails)
         viewModel.exText.observe(this.viewLifecycleOwner, this::showErrorToast)
-
-
-
     }
 
     override fun onCreateView(
@@ -95,12 +88,17 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
     }
 
     private fun setMovieDetails(movie: Movie){
-        Glide.with(this).load(Uri.parse(     RetrofitModule.BASE_URL
-             + movie.backdrop)).into(backGround)
+
+            Glide.with(this).load(
+                Uri.parse(BASE_URL + movie.backdrop)
+            ).into(backGround)
+
+
         movieName.text = movie.title
         genre.text = movie.genres.toString().removePrefix("[").removeSuffix("]")
         reviews.text = getString(R.string.reviews)
         overView.setText(movie.overview)
+
 
         reviews.setText(getString(R.string.reviews))
         if(movie.adult){
@@ -118,8 +116,7 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         list.adapter = ActorsAdapter(movie)
     }
 
-    public fun showErrorToast(ext: String) {
+    fun showErrorToast(ext: String) {
        Toast.makeText(activity, ext, Toast.LENGTH_SHORT).show()
-
     }
 }

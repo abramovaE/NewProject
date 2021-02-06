@@ -17,8 +17,10 @@ interface LoadMoviesInt {
     @GET("3/movie/{movie_id}/credits")
     suspend fun loadMovieActors(@Path("movie_id") movieId: Int): MovieCreditRespClass
 
-
     @GET("3/configuration")
     suspend fun getConfiguration(): ImageResp
 
+
+
 }
+

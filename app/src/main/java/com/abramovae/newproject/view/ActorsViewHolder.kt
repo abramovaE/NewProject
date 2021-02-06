@@ -15,9 +15,10 @@ class ActorsViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
     private val name: TextView = itemView.findViewById(R.id.nameActor)
     private val img: ImageView = itemView.findViewById(R.id.imgActor)
+    val BASE_URL = "https://image.tmdb.org/t/p/w500"
 
     fun bind(actor: Actor){
         name.setText(actor.name)
-        Glide.with(itemView.context).load(Uri.parse( RetrofitModule.BASE_URL + actor.picture)).into(img)
+        Glide.with(itemView.context).load(Uri.parse( BASE_URL + actor.picture)).into(img)
     }
 }

@@ -11,6 +11,7 @@ import kotlinx.serialization.Serializable
 @Entity(tableName = "genre")
 @Serializable
 data class Genre(
+
     @SerialName("id")
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "uid")
