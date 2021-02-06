@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieRespClass(
+public data class MovieRespClass(
         @SerialName("page")
         val page: Int,
 

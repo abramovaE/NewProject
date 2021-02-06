@@ -10,7 +10,6 @@ import kotlin.math.roundToInt
 @Serializable
 data class Movie(
 
-
         @SerialName("id")
     val id: Int,
 
@@ -45,10 +44,8 @@ data class Movie(
 
 
 
+
     constructor(parcel: Parcel) : this(
-
-
-
         parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
@@ -57,12 +54,25 @@ data class Movie(
         parcel.readFloat(),
         parcel.readByte() != 0.toByte(),
         parcel.readInt(),
-            parcel.createIntArray()!!.toList(),
-
+        parcel.createIntArray()!!.toList(),
         parcel.createTypedArrayList(Genre)!!,
         parcel.createTypedArrayList(Actor)!!
     ) {
     }
+
+
+    constructor(it: Movie, genres: List<Genre>, actors: List<Actor>) : this(
+            it.id,
+            it.title,
+            it.overview,
+            it.poster,
+            it.backdrop,
+            it.ratings,
+            it.adult,
+            it.runtime,
+            it.genreIds,
+            genres, actors
+    ){}
 
 
     fun getRating(): Int{

@@ -86,18 +86,9 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
                 genresList = loadMoviesApi.loadGenres().genres
                 movies = loadMoviesApi.getMovies().movies.map {
                     Movie(
-                        it.id,
-                        it.title,
-                        it.overview,
-                        it.poster,
-                        it.backdrop,
-                        it.ratings,
-                        it.adult,
-                        it.runtime,
-                        it.genreIds,
+                        it,
                         getGenres(it.genreIds),
                         kotlin.collections.emptyList<com.android.academy.fundamentals.homework.features.data.Actor>()
-//                        getActors(it.id)
                     )
                 }
             }
@@ -109,6 +100,7 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
             _movies.value = movies
         }
     }
+
 
     fun getGenres(genreIds: List<Int>): List<Genre>{
         return genresList.filter { genreIds.contains(it.id) }

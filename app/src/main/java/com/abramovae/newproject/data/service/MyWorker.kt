@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 class MyWorker(context: Context, workerParams: WorkerParameters): Worker(context, workerParams) {
 
     private val loadMoviesApi = RetrofitModule.loadMoviesApi
-    private val appContext = context.applicationContext
     private val repo = Repository(context.applicationContext)
     lateinit var genresList: List<Genre>
 
@@ -32,22 +31,13 @@ class MyWorker(context: Context, workerParams: WorkerParameters): Worker(context
         }
     }
 
-    suspend fun job() {
+    private suspend fun job() {
         genresList = loadMoviesApi.loadGenres().genres
         var movies = loadMoviesApi.getMovies().movies.map {
             Movie(
-                    it.id,
-                    it.title,
-                    it.overview,
-                    it.poster,
-                    it.backdrop,
-                    it.ratings,
-                    it.adult,
-                    it.runtime,
-                    it.genreIds,
+                    it,
                     getGenres(it.genreIds),
                     kotlin.collections.emptyList<com.android.academy.fundamentals.homework.features.data.Actor>()
-//                        getActors(it.id)
             )
         }
         var moviesdb: List<MovieDB> = convertMovies(movies)
