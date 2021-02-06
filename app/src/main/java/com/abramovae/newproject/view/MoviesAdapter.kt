@@ -11,7 +11,7 @@ import java.util.ArrayList
 
 class MoviesAdapter(private val clickListener: ClickListener): RecyclerView.Adapter<MoviesViewHolder>() {
 
-    private var movies = emptyList<Movie>()
+    private var movies = ArrayList<Movie>()
 
     fun setNewMovies(movies: List<Movie>){
         this.movies = movies as ArrayList<Movie>

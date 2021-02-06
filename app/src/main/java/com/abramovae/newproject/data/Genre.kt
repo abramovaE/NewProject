@@ -2,8 +2,17 @@ package com.android.academy.fundamentals.homework.features.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-data class Genre(val id: Int, val name: String?): Parcelable{
+@Serializable
+data class Genre(
+    @SerialName("id")
+    val id: Int,
+
+    @SerialName("name")
+    val name: String?
+): Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString()

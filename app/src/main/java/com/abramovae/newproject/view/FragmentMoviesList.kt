@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
@@ -41,7 +42,6 @@ class FragmentMoviesList: Fragment(), ClickListener
         var list = view.findViewById<RecyclerView>(R.id.rvMovies)
 
         viewModel = ViewModelProvider((activity as MainActivity), MoviesVM.Factory(activity as MainActivity)).get(MoviesVM::class.java)
-
         viewModel.load()
 
 
@@ -55,9 +55,9 @@ class FragmentMoviesList: Fragment(), ClickListener
 
          override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
              super.onViewCreated(view, savedInstanceState)
-
              viewModel.selectedMovie.observe(this.viewLifecycleOwner, this::selected)
              viewModel.movies.observe(this.viewLifecycleOwner, this::updateAdapter)
+             viewModel.exText.observe(this.viewLifecycleOwner, this::showErrorToast)
          }
 
 
@@ -88,6 +88,12 @@ class FragmentMoviesList: Fragment(), ClickListener
              viewModel.select(movie)
 //             toFragmentMovieDetails(movie)
          }
-     }
 
+
+public fun showErrorToast(ext: String) {
+    Toast.makeText(activity, ext, Toast.LENGTH_SHORT).show()
+
+}
+
+}
 
