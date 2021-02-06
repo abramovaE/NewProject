@@ -2,25 +2,17 @@ package com.abramovae.newproject.viewModel
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.abramovae.newproject.data.RetrofitModule
-import com.abramovae.newproject.repo.LoadMovieInterceptor
 import com.abramovae.newproject.repo.LoadMoviesInt
+import com.abramovae.newproject.repo.Repository
 import com.android.academy.fundamentals.homework.features.data.Actor
 import com.android.academy.fundamentals.homework.features.data.Genre
 import com.android.academy.fundamentals.homework.features.data.Movie
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.*
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.create
 import java.lang.IllegalArgumentException
-import java.util.concurrent.TimeUnit
 
-class MoviesVM(private val loadMoviesApi: LoadMoviesInt): ViewModel() {
+class MoviesVM(private val loadMoviesApi: LoadMoviesInt,  private val repository: Repository): ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, exception ->
         println("CoroutineExceptionHandler got $exception")
@@ -53,6 +45,14 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt): ViewModel() {
     fun load() {
         lateinit var movies: List<Movie>
         viewModelScope.launch(handler) {
+            withContext(Dispatchers.IO){
+                genresList = repository.getAllGenres()
+                movies = repository.getAllMovies()
+                _movies.value = movies
+            }
+
+
+
             withContext(Dispatchers.IO) {
                 genresList = loadMoviesApi.loadGenres().genres
                 movies = loadMoviesApi.getMovies().movies.map {
@@ -68,12 +68,13 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt): ViewModel() {
                         it.genreIds,
 
                         getGenres(it.genreIds),
-                        getActors(it.id)
+                        getActors(it.id!!)
 
                     )
                 }
             }
             _movies.value = movies
+
         }
     }
 
@@ -96,13 +97,18 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt): ViewModel() {
         private val appContext = context.applicationContext
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+
+
             when (modelClass) {
-                MoviesVM::class.java -> MoviesVM(RetrofitModule.loadMoviesApi) as T
+                MoviesVM::class.java -> MoviesVM(RetrofitModule.loadMoviesApi, Repository(appContext)
+                ) as T
                 else -> throw IllegalArgumentException()
             }
-            return MoviesVM(RetrofitModule.loadMoviesApi) as T
+            return MoviesVM(RetrofitModule.loadMoviesApi, Repository(appContext)) as T
         }
     }
+
+
 
 
 

@@ -2,15 +2,22 @@ package com.android.academy.fundamentals.homework.features.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Entity(tableName = "genre")
 @Serializable
 data class Genre(
     @SerialName("id")
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "uid")
     val id: Int,
 
     @SerialName("name")
+    @ColumnInfo(name = "name")
     val name: String?
 ): Parcelable{
     constructor(parcel: Parcel) : this(
@@ -41,7 +48,4 @@ data class Genre(
             return arrayOfNulls(size)
         }
     }
-
-
-
 }
