@@ -1,9 +1,14 @@
 package com.abramovae.newproject
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.net.toUri
 import androidx.work.WorkManager
 import com.abramovae.newproject.data.service.WorkerRepo
 import com.abramovae.newproject.view.FragmentMovieDetails
@@ -25,6 +30,11 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+
+
+
 
         if (savedInstanceState == null) {
             fragmentMoviesList = FragmentMoviesList.newInstance()

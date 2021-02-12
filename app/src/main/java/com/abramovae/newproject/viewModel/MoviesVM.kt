@@ -1,9 +1,16 @@
 package com.abramovae.newproject.viewModel
 
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.*
+import com.abramovae.newproject.MainActivity
+import com.abramovae.newproject.R
 import com.abramovae.newproject.data.RetrofitModule
 import com.abramovae.newproject.data.database.ActorDB
 import com.abramovae.newproject.data.database.GenreDB
@@ -23,6 +30,7 @@ import retrofit2.Retrofit
 import retrofit2.create
 import java.lang.IllegalArgumentException
 import java.util.concurrent.TimeUnit
+
 
 class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repository): ViewModel() {
     private val handler = CoroutineExceptionHandler { _, exception ->
@@ -97,7 +105,11 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
             var genresDb: List<GenreDB> = convertGenres(genresList)
             repo.saveAllMovies(moviesdb)
             repo.saveAllGenres(genresDb)
+
             _movies.value = movies
+
+            repo.showNotification(movies.get(0))
+
         }
     }
 

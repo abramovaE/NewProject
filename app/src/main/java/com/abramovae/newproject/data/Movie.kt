@@ -16,6 +16,8 @@ data class Movie(
         @SerialName("title")
     val title: String?,
 
+        
+
         @SerialName("overview")
     val overview: String?,
 
