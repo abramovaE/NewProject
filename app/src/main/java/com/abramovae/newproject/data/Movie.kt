@@ -12,13 +12,10 @@ import kotlin.math.roundToInt
 @Entity(tableName = "movie")
 data class Movie(
 
-    @PrimaryKey
-    @ColumnInfo(name = "uid")
-    @SerialName("id")
-    val id: Int? = null,
+        @SerialName("id")
+    val id: Int,
 
-    @ColumnInfo(name = "title")
-    @SerialName("title")
+        @SerialName("title")
     val title: String?,
 
     @ColumnInfo(name = "overview")
@@ -59,6 +56,7 @@ data class Movie(
     public constructor(): this(0, null, null, null,
         null, 0.0f, false, 0, emptyList(), emptyList(), emptyList())
 
+
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString(),
@@ -74,6 +72,20 @@ data class Movie(
     ) {
     }
 
+
+    constructor(it: Movie, genres: List<Genre>, actors: List<Actor>) : this(
+            it.id,
+            it.title,
+            it.overview,
+            it.poster,
+            it.backdrop,
+            it.ratings,
+            it.adult,
+            it.runtime,
+            it.genreIds,
+            genres, actors
+    ){}
+      
     fun getRating(): Int{
         return ((ratings/2.0).roundToInt());
     }

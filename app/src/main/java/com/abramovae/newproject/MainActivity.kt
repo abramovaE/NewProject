@@ -3,6 +3,9 @@ package com.abramovae.newproject
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.work.WorkManager
+import com.abramovae.newproject.data.service.WorkerRepo
 import com.abramovae.newproject.view.FragmentMovieDetails
 import com.abramovae.newproject.view.FragmentMoviesList
 
@@ -10,6 +13,7 @@ import com.abramovae.newproject.view.FragmentMoviesList
 
 class MainActivity : AppCompatActivity(){
 
+    private val workRepository = WorkerRepo();
 
     val FRAGMENT_MOVIE_DETAILS_TAG = "FRAGMENT_MOVIE_DETAILS"
     val FRAGMENT_MOVIES_LIST_TAG = "FRAGMENT_MOVIES_LIST"
@@ -35,6 +39,9 @@ class MainActivity : AppCompatActivity(){
             fragmentMoviesList =
                 supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIES_LIST_TAG) as? FragmentMoviesList
         }
+
+        WorkManager.getInstance(this).enqueue(workRepository.locationWork)
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

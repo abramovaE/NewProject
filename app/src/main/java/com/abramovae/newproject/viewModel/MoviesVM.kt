@@ -14,7 +14,7 @@ import kotlinx.coroutines.*
 import java.lang.IllegalArgumentException
 
 
-class MoviesVM(private val loadMoviesApi: LoadMoviesInt,  private val repository: Repository): ViewModel() {
+class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repository): ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, exception ->
         println("CoroutineExceptionHandler got $exception")
@@ -24,14 +24,11 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt,  private val repository
     private val _exText = MutableLiveData<String>()
     val exText get() = _exText
 
-
     private val _selectedMovie = MutableLiveData<Movie>()
     val selectedMovie get() = _selectedMovie
 
-
     private val _movies = MutableLiveData<List<Movie>>()
     val movies get() = _movies
-
 
     private val _genres = MutableLiveData<List<Genre>>()
     val genres get() = _genres
@@ -54,14 +51,14 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt,  private val repository
         }
     }
 
-    fun load() {
+     fun load() {
         lateinit var movies: List<Movie>
         viewModelScope.launch(handler) {
             withContext(Dispatchers.IO){
-               genresList = loadMoviesApi.loadGenres().genres
-                movies = loadMoviesApi.getMovies().movies.map {
-                    Movie(
-                        it.uid,
+                var movDb: List<MovieDB> = repo.getAllMovies()
+                var genDB: List<GenreDB> = repo.getAllGenres()
+                movies = movDb.map {
+                    Movie(it.uid,
                     it.title,
                     it.overview,
                     it.poster,
@@ -70,11 +67,26 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt,  private val repository
                     it.adult,
                     it.runtime,
                     it.genreIds,
+                    getGenres(it.genreIds, conversGenres(genDB)),
+                    kotlin.collections.emptyList<com.android.academy.fundamentals.homework.features.data.Actor>()
+                    )
+                }
+            }
+            _movies.value = movies
+
+            withContext(Dispatchers.IO) {
+                genresList = loadMoviesApi.loadGenres().genres
+                movies = loadMoviesApi.getMovies().movies.map {
+                    Movie(
+                        it,
                         getGenres(it.genreIds),
                         kotlin.collections.emptyList<com.android.academy.fundamentals.homework.features.data.Actor>()
                     )
                 }
             }
+
+     
+
             var moviesdb: List<MovieDB> = convertMovies(movies)
             var genresDb: List<GenreDB> = convertGenres(genresList)
             repo.saveAllMovies(moviesdb)
@@ -83,6 +95,7 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt,  private val repository
 
         }
     }
+
 
     fun getGenres(genreIds: List<Int>): List<Genre>{
         return genresList.filter { genreIds.contains(it.id) }
