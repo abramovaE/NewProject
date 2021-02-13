@@ -100,7 +100,6 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
             repo.saveAllMovies(moviesdb)
             repo.saveAllGenres(genresDb)
             _movies.value = movies
-
         }
     }
 
