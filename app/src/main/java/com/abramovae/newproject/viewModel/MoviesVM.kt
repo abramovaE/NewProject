@@ -1,6 +1,7 @@
 package com.abramovae.newproject.viewModel
 
 import android.content.Context
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,10 +11,13 @@ import com.abramovae.newproject.data.database.ActorDB
 import com.abramovae.newproject.data.database.GenreDB
 import com.abramovae.newproject.data.database.MovieDB
 import com.abramovae.newproject.data.database.Repository
+
 import com.abramovae.newproject.repo.LoadMoviesInt
+import com.abramovae.newproject.repo.Repository
 import com.android.academy.fundamentals.homework.features.data.Actor
 import com.android.academy.fundamentals.homework.features.data.Genre
 import com.android.academy.fundamentals.homework.features.data.Movie
+
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,6 +25,7 @@ import kotlinx.coroutines.withContext
 
 
 class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repository): ViewModel() {
+
     private val handler = CoroutineExceptionHandler { _, exception ->
         println("CoroutineExceptionHandler got $exception")
         _exText.value = "the loading was failed"
@@ -54,8 +59,8 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
     }
 
 
-
     fun load() {
+
         lateinit var movies: List<Movie>
         viewModelScope.launch(handler) {
             withContext(Dispatchers.IO){
@@ -188,12 +193,12 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
         private val appContext = context.applicationContext
         private val repo = Repository(context.applicationContext)
 
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+           override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             when (modelClass) {
                 MoviesVM::class.java -> MoviesVM(RetrofitModule.loadMoviesApi, repo) as T
                 else -> throw IllegalArgumentException()
             }
             return MoviesVM(RetrofitModule.loadMoviesApi, repo) as T
         }
-    }
+      }
 }
