@@ -1,17 +1,27 @@
 package com.abramovae.newproject.viewModel
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.*
+
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.abramovae.newproject.data.RetrofitModule
+import com.abramovae.newproject.data.database.ActorDB
+import com.abramovae.newproject.data.database.GenreDB
+import com.abramovae.newproject.data.database.MovieDB
+import com.abramovae.newproject.data.database.Repository
 
 import com.abramovae.newproject.repo.LoadMoviesInt
 import com.abramovae.newproject.repo.Repository
 import com.android.academy.fundamentals.homework.features.data.Actor
 import com.android.academy.fundamentals.homework.features.data.Genre
 import com.android.academy.fundamentals.homework.features.data.Movie
-import kotlinx.coroutines.*
-import java.lang.IllegalArgumentException
+
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repository): ViewModel() {
@@ -37,12 +47,9 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
 
     fun select(movie: Movie) {
         viewModelScope.launch(handler) {
-
             var actorsDb: List<ActorDB> = repo.getActors(movie.id)
             movie.actors = convertActors(actorsDb)
             _selectedMovie.value = movie
-
-
             var actors = getActors(movie.id)
             movie.actors = actors
             var convertedActors = convertActors(actors, movie.id)
@@ -51,7 +58,9 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
         }
     }
 
-     fun load() {
+
+    fun load() {
+
         lateinit var movies: List<Movie>
         viewModelScope.launch(handler) {
             withContext(Dispatchers.IO){
@@ -85,7 +94,11 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
                 }
             }
 
-     
+            withContext(Dispatchers.IO){
+                val byRating: Comparator<Movie> = Comparator.comparing {m-> m.ratings}
+                var m = movies.sortedWith(byRating).reversed().get(0)
+                repo.showNotification(m)
+            }
 
             var moviesdb: List<MovieDB> = convertMovies(movies)
             var genresDb: List<GenreDB> = convertGenres(genresList)

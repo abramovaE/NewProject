@@ -44,6 +44,14 @@ class MyWorker(context: Context, workerParams: WorkerParameters): Worker(context
         var genresDb: List<GenreDB> = convertGenres(genresList)
         repo.saveAllMovies(moviesdb)
         repo.saveAllGenres(genresDb)
+
+
+
+
+
+//        repo.showNotification(movies.get(0))
+
+
     }
 
     fun getGenres(genreIds: List<Int>): List<Genre>{

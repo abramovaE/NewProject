@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abramovae.newproject.MainActivity
 import com.abramovae.newproject.R
-import com.abramovae.newproject.data.RetrofitModule
 import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.bumptech.glide.Glide
 import kotlin.collections.listOf as listOf1
+
 
 class FragmentMovieDetails: Fragment(), View.OnClickListener{
     private lateinit var viewModel: MoviesVM
@@ -32,7 +32,11 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
     private lateinit var overView: TextView
     private lateinit var stars: List<ImageView>
     private lateinit var list: RecyclerView
+    private lateinit var addToCalendarBtn: TextView
     val BASE_URL = "https://image.tmdb.org/t/p/w500"
+
+    val FRAGMENT_CALENDAR_TAG = "FRAGMENT_CALENDAR"
+
 
     companion object {
         fun newInstance(): FragmentMovieDetails {
@@ -55,10 +59,7 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View{
-
-
         var view = inflater.inflate(R.layout.fragment_movies_details, container, false)
-
         backGround = view.findViewById<ImageView>(R.id.imageView)
         movieName = view.findViewById<TextView>(R.id.movieName)
         age = view.findViewById(R.id.age)
@@ -67,6 +68,8 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         backBtn = view.findViewById(R.id.backBtn)
         overView = view.findViewById(R.id.overview)
         backBtn.setOnClickListener(this)
+        addToCalendarBtn = view.findViewById(R.id.addToCalendar)
+        addToCalendarBtn.setOnClickListener(this)
 
         val star0: ImageView = view.findViewById(R.id.star0)
         val star1: ImageView = view.findViewById(R.id.star1)
@@ -84,6 +87,9 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
     override fun onClick(v: View) {
         if(v.id == R.id.backBtn){
             this.fragmentManager?.popBackStack()
+        }
+        else if(v.id == R.id.addToCalendar){
+            toFragmentCalendar()
         }
     }
 
@@ -118,5 +124,19 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
 
     fun showErrorToast(ext: String) {
        Toast.makeText(activity, ext, Toast.LENGTH_SHORT).show()
+    }
+
+    fun toFragmentCalendar(){
+        var fm = this.fragmentManager
+        var fragmentCalendar =
+            FragmentCalendar.newInstance(
+            )
+        fragmentCalendar?.apply {
+            fm
+                ?.beginTransaction()
+                ?.add(R.id.frame, this, FRAGMENT_CALENDAR_TAG)
+                ?.addToBackStack(FRAGMENT_CALENDAR_TAG)
+                ?.commit()
+        }
     }
 }

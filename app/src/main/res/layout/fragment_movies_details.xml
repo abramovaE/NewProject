@@ -68,6 +68,20 @@
             />
 
 
+
+        <TextView
+            android:id="@+id/addToCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="98dp"
+            android:text="@string/add_to_calendar"
+            android:textColor="@color/rasp"
+            app:layout_constraintStart_toEndOf="@id/chevron"
+            app:layout_constraintTop_toTopOf="@id/chevron"
+            app:layout_constraintBottom_toBottomOf="@id/chevron"
+            android:clickable="true"
+            />
+
         <TextView
             android:id="@+id/age"
             android:layout_width="wrap_content"
