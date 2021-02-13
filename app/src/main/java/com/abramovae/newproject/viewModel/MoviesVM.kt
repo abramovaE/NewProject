@@ -1,35 +1,23 @@
 package com.abramovae.newproject.viewModel
 
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.util.Log
-import android.widget.Toast
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.net.toUri
-import androidx.lifecycle.*
-import com.abramovae.newproject.MainActivity
-import com.abramovae.newproject.R
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.abramovae.newproject.data.RetrofitModule
 import com.abramovae.newproject.data.database.ActorDB
 import com.abramovae.newproject.data.database.GenreDB
 import com.abramovae.newproject.data.database.MovieDB
 import com.abramovae.newproject.data.database.Repository
-import com.abramovae.newproject.repo.LoadMovieInterceptor
 import com.abramovae.newproject.repo.LoadMoviesInt
 import com.android.academy.fundamentals.homework.features.data.Actor
 import com.android.academy.fundamentals.homework.features.data.Genre
 import com.android.academy.fundamentals.homework.features.data.Movie
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.coroutines.*
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.create
-import java.lang.IllegalArgumentException
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repository): ViewModel() {
@@ -54,12 +42,9 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
 
     fun select(movie: Movie) {
         viewModelScope.launch(handler) {
-
             var actorsDb: List<ActorDB> = repo.getActors(movie.id)
             movie.actors = convertActors(actorsDb)
             _selectedMovie.value = movie
-
-
             var actors = getActors(movie.id)
             movie.actors = actors
             var convertedActors = convertActors(actors, movie.id)
@@ -67,6 +52,8 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
             _selectedMovie.value = movie
         }
     }
+
+
 
     fun load() {
         lateinit var movies: List<Movie>
@@ -85,7 +72,8 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
                     it.runtime,
                     it.genreIds,
                     getGenres(it.genreIds, conversGenres(genDB)),
-                    kotlin.collections.emptyList<com.android.academy.fundamentals.homework.features.data.Actor>())
+                    kotlin.collections.emptyList<com.android.academy.fundamentals.homework.features.data.Actor>()
+                    )
                 }
             }
             _movies.value = movies
@@ -101,14 +89,17 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
                 }
             }
 
+            withContext(Dispatchers.IO){
+                val byRating: Comparator<Movie> = Comparator.comparing {m-> m.ratings}
+                var m = movies.sortedWith(byRating).reversed().get(0)
+                repo.showNotification(m)
+            }
+
             var moviesdb: List<MovieDB> = convertMovies(movies)
             var genresDb: List<GenreDB> = convertGenres(genresList)
             repo.saveAllMovies(moviesdb)
             repo.saveAllGenres(genresDb)
-
             _movies.value = movies
-
-            repo.showNotification(movies.get(0))
 
         }
     }

@@ -44,18 +44,12 @@ class MyWorker(context: Context, workerParams: WorkerParameters): Worker(context
         var genresDb: List<GenreDB> = convertGenres(genresList)
         repo.saveAllMovies(moviesdb)
         repo.saveAllGenres(genresDb)
-//        var m = repo.getAllMovies().get(0);
-//
-//
-//        val notification = NotificationCompat.Builder(applicationContext, "CHANNEL")
-//                .setContentTitle(chat.contact.name)
-//                .setContentText(message.text)
-//                .setSmallIcon(R.drawable.ic_message)
-//                .setWhen(message.timestamp)
-//                .setLargeIcon(bitmapIcon)
-//                .build()
-//        val notificationManager = NotificationManagerCompat.from(context)
-//        notificationManager.notify("chat", chat.id, notification)
+
+
+
+
+
+//        repo.showNotification(movies.get(0))
 
 
     }

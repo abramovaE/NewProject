@@ -16,8 +16,6 @@ data class Movie(
         @SerialName("title")
     val title: String?,
 
-        
-
         @SerialName("overview")
     val overview: String?,
 
@@ -42,6 +40,7 @@ data class Movie(
         var genres: List<Genre> = ArrayList<Genre>(),
 
         var actors: List<Actor> = ArrayList<Actor>()
+
 ): Parcelable{
 
 
@@ -59,7 +58,9 @@ data class Movie(
         parcel.createIntArray()!!.toList(),
         parcel.createTypedArrayList(Genre)!!,
         parcel.createTypedArrayList(Actor)!!
-    ) {
+
+
+        ) {
     }
 
 
@@ -93,6 +94,7 @@ data class Movie(
         parcel.writeIntArray(genreIds.toIntArray())
         parcel.writeTypedList(genres)
         parcel.writeTypedList(actors)
+
     }
 
     override fun describeContents(): Int {

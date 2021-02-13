@@ -15,6 +15,8 @@ import androidx.core.app.NotificationManagerCompat.IMPORTANCE_HIGH
 import androidx.core.net.toUri
 import com.abramovae.newproject.MainActivity
 import com.abramovae.newproject.R
+import com.abramovae.newproject.data.AppNotifications
+import com.abramovae.newproject.data.Notifications
 import com.android.academy.fundamentals.homework.features.data.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -22,45 +24,16 @@ import kotlinx.coroutines.withContext
 class Repository(applicationContext: Context)
 {
 
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun showNotification(movie: Movie) = withContext(Dispatchers.IO){
-        val notificationManager = NotificationManagerCompat.from(context)
-
-        if (notificationManager.getNotificationChannel("CHANNEL") == null) {
-            notificationManager.createNotificationChannel(
-                NotificationChannel("CHANNEL", "CHANNEL",
-                    NotificationManager.IMPORTANCE_HIGH
-                )
-            )
-        }
-
-
-        val notification = NotificationCompat.Builder(context, "CHANNEL")
-            .setContentTitle("title")
-            .setContentText(movie.title)
-            .setSmallIcon(R.drawable.star)
-            .setWhen(System.currentTimeMillis())
-//                .setLargeIcon(bitmapIcon)
-            .setContentIntent(
-                PendingIntent.getActivity(
-                    context,
-                    1,
-                    Intent(context, MainActivity::class.java)
-                        .setAction(Intent.ACTION_VIEW)
-                        .setData(("https://api.themoviedb.org/movie/" + movie.id + "-" + movie.title).toUri()),
-                    PendingIntent.FLAG_UPDATE_CURRENT
-            )
-        )
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .build()
-        Log.d("", "https://api.themoviedb.org/movie/" + movie.id + "-" + movie.title)
-        notificationManager.notify("movie", 1, notification)
+        notifications.initialize()
+        notifications.showNotification(movie)
     }
 
     private val db = AppDatabase.create(applicationContext)
     private val context = applicationContext;
+    private val notifications: Notifications = AppNotifications(applicationContext)
+
 
     suspend fun getAllGenres(): List<GenreDB> = withContext(Dispatchers.IO) {
         db.genreDao().getAllGenres()
