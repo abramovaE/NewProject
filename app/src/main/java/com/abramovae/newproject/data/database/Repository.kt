@@ -24,7 +24,6 @@ import kotlinx.coroutines.withContext
 class Repository(applicationContext: Context)
 {
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun showNotification(movie: Movie) = withContext(Dispatchers.IO){
         notifications.initialize()
         notifications.showNotification(movie)

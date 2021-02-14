@@ -24,6 +24,7 @@ class FragmentCalendar: Fragment(), CalendarView.OnDateChangeListener{
 
     private var hasPermissions = false
     private var hasRequestPermissions = false
+    private val REQUEST_CODE = 100;
 
     companion object {
         fun newInstance(): FragmentCalendar {
@@ -54,7 +55,7 @@ class FragmentCalendar: Fragment(), CalendarView.OnDateChangeListener{
             } else{
                 Log.d("TAG", "request permissions")
                 var array = arrayOf(android.Manifest.permission.READ_CALENDAR, android.Manifest.permission.WRITE_CALENDAR)
-                requestPermissions(array, 100)
+                requestPermissions(array, REQUEST_CODE)
 
             }
     }

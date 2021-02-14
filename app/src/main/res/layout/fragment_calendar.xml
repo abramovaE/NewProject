@@ -20,7 +20,9 @@
             android:weekNumberColor="#ffffff"
             android:weekSeparatorLineColor="#00ff00"
 
-
+            android:theme="@style/CalenderViewCustom"
+            android:dateTextAppearance="@style/CalenderViewDateCustomText"
+            android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
 
 
             />
