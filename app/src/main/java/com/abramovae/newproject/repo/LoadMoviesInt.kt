@@ -20,7 +20,5 @@ interface LoadMoviesInt {
     @GET("3/configuration")
     suspend fun getConfiguration(): ImageResp
 
-
-
 }
 

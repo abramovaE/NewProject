@@ -3,6 +3,7 @@ package com.abramovae.newproject.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.abramovae.newproject.R
 import com.android.academy.fundamentals.homework.features.data.Movie
@@ -45,6 +46,7 @@ class MoviesAdapter(private val clickListener: ClickListener): RecyclerView.Adap
         holder.itemView.findViewById<View>(R.id.bg).setOnClickListener {
             clickListener.onClick(getItem(position))
         }
+
 
     }
 

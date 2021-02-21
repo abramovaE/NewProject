@@ -6,6 +6,7 @@
     android:layout_height="296dp"
     android:background="@color/dark_dark"
     android:layout_marginBottom="11dp"
+    android:transitionName="view_holder_movie_transition"
     >
 
     <View
@@ -228,5 +229,10 @@
         android:textAllCaps="true"
         android:textStyle="bold"
         />
+
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

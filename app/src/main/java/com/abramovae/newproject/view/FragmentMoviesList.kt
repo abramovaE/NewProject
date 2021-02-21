@@ -5,26 +5,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Explode
+import androidx.transition.TransitionInflater
+import androidx.transition.TransitionManager
 import com.abramovae.newproject.MainActivity
 import com.abramovae.newproject.R
 import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
-import java.util.ArrayList
+import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialElevationScale
+import java.util.concurrent.TimeUnit
 
 
 class FragmentMoviesList: Fragment(), ClickListener
      {
 
+
+
     val FRAGMENT_MOVIE_DETAILS_TAG = "FRAGMENT_MOVIE_DETAILS"
     private lateinit var viewModel: MoviesVM
 
          lateinit var adapter: MoviesAdapter
+         private lateinit var _view: View
 
 
     companion object {
@@ -50,6 +59,10 @@ class FragmentMoviesList: Fragment(), ClickListener
         list.adapter = adapter
 
 
+        _view = view;
+        returnTransition = MaterialElevationScale(false).addTarget(view!!)
+
+        postponeEnterTransition()
         return view;
     }
 
@@ -66,13 +79,18 @@ class FragmentMoviesList: Fragment(), ClickListener
         var fragmentMovieDetails =
             FragmentMovieDetails.newInstance(
             )
+        val v = layoutInflater.inflate(R.layout.view_holder_movie, null)
         fragmentMovieDetails?.apply {
             fm
             ?.beginTransaction()
+                    ?.addSharedElement(v, "movie_details_transition")
                     ?.add(R.id.frame, this, FRAGMENT_MOVIE_DETAILS_TAG)
                     ?.addToBackStack(FRAGMENT_MOVIE_DETAILS_TAG)
                     ?.commit()
         }
+        exitTransition = MaterialElevationScale(true).addTarget(v)
+
+//        postponeEnterTransition()
     }
 
 
@@ -86,7 +104,6 @@ class FragmentMoviesList: Fragment(), ClickListener
 
          override fun onClick(movie: Movie) {
              viewModel.select(movie)
-//             toFragmentMovieDetails(movie)
          }
 
 
@@ -94,6 +111,6 @@ public fun showErrorToast(ext: String) {
     Toast.makeText(activity, ext, Toast.LENGTH_SHORT).show()
 
 }
-
 }
+
 

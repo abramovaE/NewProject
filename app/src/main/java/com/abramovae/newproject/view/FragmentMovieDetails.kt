@@ -8,16 +8,22 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Explode
+import androidx.transition.TransitionInflater
 import com.abramovae.newproject.MainActivity
 import com.abramovae.newproject.R
 import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.bumptech.glide.Glide
+import com.google.android.material.transition.MaterialContainerTransform
+import java.util.concurrent.TimeUnit
 import kotlin.collections.listOf as listOf1
 
 
@@ -43,9 +49,11 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
             val args = Bundle()
             val fragment = FragmentMovieDetails()
             fragment.arguments = args
+
             return fragment
         }
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -59,6 +67,9 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View{
+
+
+
         var view = inflater.inflate(R.layout.fragment_movies_details, container, false)
         backGround = view.findViewById<ImageView>(R.id.imageView)
         movieName = view.findViewById<TextView>(R.id.movieName)
@@ -81,6 +92,11 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         list = view.findViewById<RecyclerView>(R.id.rvActors)
         list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
+        sharedElementEnterTransition = MaterialContainerTransform().addTarget(view!!)
+        postponeEnterTransition(1000L, TimeUnit.MILLISECONDS)
+
+
+
         return view
     }
 
@@ -99,13 +115,10 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
                 Uri.parse(BASE_URL + movie.backdrop)
             ).into(backGround)
 
-
         movieName.text = movie.title
         genre.text = movie.genres.toString().removePrefix("[").removeSuffix("]")
         reviews.text = getString(R.string.reviews)
         overView.setText(movie.overview)
-
-
         reviews.setText(getString(R.string.reviews))
         if(movie.adult){
             age.setText(getString(R.string.age16));
