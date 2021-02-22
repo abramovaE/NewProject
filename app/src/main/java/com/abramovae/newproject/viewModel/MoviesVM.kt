@@ -44,7 +44,7 @@ class MoviesVM(private val loadMoviesApi: LoadMoviesInt, private val repo: Repos
         viewModelScope.launch(handler) {
             var actorsDb: List<ActorDB> = repo.getActors(movie.id)
             movie.actors = convertActors(actorsDb)
-            _selectedMovie.value = movie
+//            _selectedMovie.value = movie
             var actors = getActors(movie.id)
             movie.actors = actors
             var convertedActors = convertActors(actors, movie.id)

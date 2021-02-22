@@ -92,10 +92,11 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         list = view.findViewById<RecyclerView>(R.id.rvActors)
         list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
-        sharedElementEnterTransition = MaterialContainerTransform().addTarget(view!!)
-        postponeEnterTransition(1000L, TimeUnit.MILLISECONDS)
 
-
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            addTarget(view)
+            duration = 300L
+        }
 
         return view
     }

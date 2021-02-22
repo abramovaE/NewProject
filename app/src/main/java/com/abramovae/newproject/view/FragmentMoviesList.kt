@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
@@ -60,9 +61,9 @@ class FragmentMoviesList: Fragment(), ClickListener
 
 
         _view = view;
-        returnTransition = MaterialElevationScale(false).addTarget(view!!)
+        exitTransition = MaterialElevationScale(false)
+        reenterTransition = MaterialElevationScale(true)
 
-        postponeEnterTransition()
         return view;
     }
 
@@ -83,14 +84,12 @@ class FragmentMoviesList: Fragment(), ClickListener
         fragmentMovieDetails?.apply {
             fm
             ?.beginTransaction()
-                    ?.addSharedElement(v, "movie_details_transition")
+                    ?.addSharedElement(v, getString(R.string.movie_transition))
                     ?.add(R.id.frame, this, FRAGMENT_MOVIE_DETAILS_TAG)
                     ?.addToBackStack(FRAGMENT_MOVIE_DETAILS_TAG)
                     ?.commit()
         }
-        exitTransition = MaterialElevationScale(true).addTarget(v)
-
-//        postponeEnterTransition()
+        postponeEnterTransition()
     }
 
 
