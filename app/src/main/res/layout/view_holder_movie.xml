@@ -6,7 +6,7 @@
     android:layout_height="296dp"
     android:background="@color/dark_dark"
     android:layout_marginBottom="11dp"
-    android:transitionName="@{@string/movie_transition(movie.id)}"
+    android:transitionName="@string/movie_transition"
     >
 
     <View

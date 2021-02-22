@@ -8,14 +8,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Explode
+import androidx.transition.Transition
 import androidx.transition.TransitionInflater
 import com.abramovae.newproject.MainActivity
 import com.abramovae.newproject.R
@@ -23,7 +21,6 @@ import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.bumptech.glide.Glide
 import com.google.android.material.transition.MaterialContainerTransform
-import java.util.concurrent.TimeUnit
 import kotlin.collections.listOf as listOf1
 
 
@@ -40,16 +37,13 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
     private lateinit var list: RecyclerView
     private lateinit var addToCalendarBtn: TextView
     val BASE_URL = "https://image.tmdb.org/t/p/w500"
-
     val FRAGMENT_CALENDAR_TAG = "FRAGMENT_CALENDAR"
-
 
     companion object {
         fun newInstance(): FragmentMovieDetails {
             val args = Bundle()
             val fragment = FragmentMovieDetails()
             fragment.arguments = args
-
             return fragment
         }
     }
@@ -67,9 +61,6 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View{
-
-
-
         var view = inflater.inflate(R.layout.fragment_movies_details, container, false)
         backGround = view.findViewById<ImageView>(R.id.imageView)
         movieName = view.findViewById<TextView>(R.id.movieName)
@@ -88,17 +79,15 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         val star3: ImageView = view.findViewById(R.id.star3)
         val star4: ImageView = view.findViewById(R.id.star4)
         stars = listOf1(star0, star1, star2, star3, star4);
-
         list = view.findViewById<RecyclerView>(R.id.rvActors)
         list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-
-
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            addTarget(view)
-            duration = 300L
-        }
-
         return view
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform()
     }
 
     override fun onClick(v: View) {

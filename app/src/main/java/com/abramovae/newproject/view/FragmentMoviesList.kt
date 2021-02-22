@@ -1,6 +1,7 @@
 package com.abramovae.newproject.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +44,13 @@ class FragmentMoviesList: Fragment(), ClickListener
         }
     }
 
+         override fun onCreate(savedInstanceState: Bundle?) {
+             super.onCreate(savedInstanceState)
+             exitTransition = MaterialElevationScale(false)
+             reenterTransition = MaterialElevationScale(true)
+
+         }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,8 +69,7 @@ class FragmentMoviesList: Fragment(), ClickListener
 
 
         _view = view;
-        exitTransition = MaterialElevationScale(false)
-        reenterTransition = MaterialElevationScale(true)
+
 
         return view;
     }
@@ -76,6 +83,7 @@ class FragmentMoviesList: Fragment(), ClickListener
 
 
     fun toFragmentMovieDetails(movie: Movie){
+
         var fm = this.fragmentManager
         var fragmentMovieDetails =
             FragmentMovieDetails.newInstance(
@@ -84,12 +92,13 @@ class FragmentMoviesList: Fragment(), ClickListener
         fragmentMovieDetails?.apply {
             fm
             ?.beginTransaction()
-                    ?.addSharedElement(v, getString(R.string.movie_transition))
+                    ?.addSharedElement(v, v.transitionName)
+                    ?.setReorderingAllowed(true)
                     ?.add(R.id.frame, this, FRAGMENT_MOVIE_DETAILS_TAG)
                     ?.addToBackStack(FRAGMENT_MOVIE_DETAILS_TAG)
                     ?.commit()
         }
-        postponeEnterTransition()
+        postponeEnterTransition();
     }
 
 
