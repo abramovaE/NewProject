@@ -13,14 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Transition
-import androidx.transition.TransitionInflater
 import com.abramovae.newproject.MainActivity
 import com.abramovae.newproject.R
 import com.abramovae.newproject.viewModel.MoviesVM
 import com.android.academy.fundamentals.homework.features.data.Movie
 import com.bumptech.glide.Glide
 import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialElevationScale
 import kotlin.collections.listOf as listOf1
 
 
@@ -47,7 +46,6 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
             return fragment
         }
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -84,10 +82,10 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
         return view
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform()
+        enterTransition = MaterialElevationScale(true)
     }
 
     override fun onClick(v: View) {
@@ -131,15 +129,11 @@ class FragmentMovieDetails: Fragment(), View.OnClickListener{
 
     fun toFragmentCalendar(){
         var fm = this.fragmentManager
-        var fragmentCalendar =
-            FragmentCalendar.newInstance(
-            )
-        fragmentCalendar?.apply {
-            fm
-                ?.beginTransaction()
-                ?.add(R.id.frame, this, FRAGMENT_CALENDAR_TAG)
-                ?.addToBackStack(FRAGMENT_CALENDAR_TAG)
-                ?.commit()
-        }
+        var fragmentCalendar = FragmentCalendar.newInstance()
+        fm
+            ?.beginTransaction()
+            ?.add(R.id.frame, fragmentCalendar, FRAGMENT_CALENDAR_TAG)
+            ?.addToBackStack(FRAGMENT_CALENDAR_TAG)
+            ?.commit()
     }
 }

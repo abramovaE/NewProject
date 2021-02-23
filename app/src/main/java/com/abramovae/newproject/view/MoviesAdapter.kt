@@ -25,7 +25,10 @@ class MoviesAdapter(private val clickListener: ClickListener): RecyclerView.Adap
 
     fun getItem(position: Int): Movie{
         return movies[position]
+    }
 
+    fun getPosition(movie: Movie): Int {
+        return movies.indexOf(movie)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
@@ -46,11 +49,7 @@ class MoviesAdapter(private val clickListener: ClickListener): RecyclerView.Adap
         holder.itemView.findViewById<View>(R.id.bg).setOnClickListener {
             clickListener.onClick(getItem(position))
         }
-
-
     }
-
-
 }
 
 
